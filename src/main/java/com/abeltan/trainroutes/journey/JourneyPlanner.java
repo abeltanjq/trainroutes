@@ -27,7 +27,7 @@ public class JourneyPlanner {
         visited.put(src, true);
         queue.add(src);
 
-        while(queue.size() != 0 || destReached) {
+        while (queue.size() != 0 || destReached) {
             String currentStation = queue.poll();
             if (currentStation.equals(dest)) {
                 destReached = true;
@@ -35,9 +35,9 @@ public class JourneyPlanner {
             }
 
             Iterator<String> iterator = adjMap.getAdjacencyOf(currentStation).iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 String adjacentStation = iterator.next();
-                if(visited.get(adjacentStation) == null) {
+                if (visited.get(adjacentStation) == null) {
                     visited.put(adjacentStation, true);
                     previous.put(adjacentStation, currentStation);
                     queue.add(adjacentStation);
@@ -79,7 +79,7 @@ public class JourneyPlanner {
         }
 
         String previous = null;
-        for (String route: routesInStationCodes) {
+        for (String route : routesInStationCodes) {
             if (previous != null) {
                 String beforeStationCode = new StationCode(previous).getLineCode();
                 String currentStationCode = new StationCode(route).getLineCode();

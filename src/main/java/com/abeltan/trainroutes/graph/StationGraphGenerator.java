@@ -1,8 +1,8 @@
 package com.abeltan.trainroutes.graph;
 
+import com.abeltan.trainroutes.station.AdjacencyMap;
 import com.abeltan.trainroutes.station.StationCode;
 import com.abeltan.trainroutes.station.StationCodes;
-import com.abeltan.trainroutes.station.AdjacencyMap;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
@@ -10,14 +10,17 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class StationGraphGenerator {
     List<String> trainLines;
-    @Getter private AdjacencyMap stationCodeAdjMap;
-    @Getter private StationCodes nameToCodes;
-    @Getter private Map<String, String> codeToName;
-    @Getter private List<String> orderedStationList;
+    @Getter
+    private AdjacencyMap stationCodeAdjMap;
+    @Getter
+    private StationCodes nameToCodes;
+    @Getter
+    private Map<String, String> codeToName;
+    @Getter
+    private List<String> orderedStationList;
 
     public StationGraphGenerator() {
         parseTrainLineTypes();
@@ -30,7 +33,7 @@ public class StationGraphGenerator {
         try {
             JsonNode jsonNode = mapper.readTree(new ClassPathResource("static/lines.json").getFile()).get("lines");
             if (jsonNode.isArray()) {
-                for (JsonNode node: jsonNode) {
+                for (JsonNode node : jsonNode) {
                     trainLines.add(node.asText());
                 }
             }
@@ -47,21 +50,21 @@ public class StationGraphGenerator {
 
         Iterator iterator = trainLines.iterator();
         ObjectMapper mapper = new ObjectMapper();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             String line = (String) iterator.next();
             try {
                 String lowerLine = line.toLowerCase();
                 JsonNode jsonNode = mapper.readTree(new ClassPathResource("static/" + lowerLine + ".json").getFile()).get(lowerLine);
                 JsonNode previous = null;
                 if (jsonNode.isArray()) {
-                    for (JsonNode node: jsonNode) {
+                    for (JsonNode node : jsonNode) {
                         String stationName = node.get("name").asText();
                         String stationCode = node.get("code").asText();
 
                         boolean isInterchange = nameToCodes.getStationCodesFrom(stationName) != null;
                         if (isInterchange) {
                             List<StationCode> codes = nameToCodes.getStationCodesFrom(stationName);
-                            for (StationCode code: codes) {
+                            for (StationCode code : codes) {
                                 stationCodeAdjMap.addAdjacent(stationCode, code.toString());
                             }
                         }
@@ -86,6 +89,6 @@ public class StationGraphGenerator {
     }
 
     public static String removeStationCodesWithSquareBrackets(String stationCodeWithSquareBrackets) {
-        return stationCodeWithSquareBrackets.replaceAll("^(\\[\\D{2}\\d{1,2}\\]\\s){1}","");
+        return stationCodeWithSquareBrackets.replaceAll("^(\\[\\D{2}\\d{1,2}\\]\\s){1}", "");
     }
- }
+}

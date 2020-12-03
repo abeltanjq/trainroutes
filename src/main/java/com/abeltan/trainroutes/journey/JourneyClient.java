@@ -7,6 +7,7 @@ import java.util.List;
 
 public class JourneyClient {
     private final JourneyPlanner journeyPlanner;
+
     public JourneyClient() {
         StationGraphGenerator sgg = new StationGraphGenerator();
         journeyPlanner = new JourneyPlanner(
@@ -22,7 +23,7 @@ public class JourneyClient {
         if (src.equals(dest)) {
             journeyPlans.add(journeyPlanner.journeyPlanFor(routes.get(0)));
         } else {
-            for (List<String> route: routes) {
+            for (List<String> route : routes) {
                 journeyPlans.add(journeyPlanner.journeyPlanFor(route));
             }
         }

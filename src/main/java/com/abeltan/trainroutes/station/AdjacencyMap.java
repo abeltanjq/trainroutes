@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class AdjacencyMap {
-    private Map<String,List<String>> adjacencyList;
+    private Map<String, List<String>> adjacencyList;
+
     public AdjacencyMap() {
         adjacencyList = new HashMap<>();
     }

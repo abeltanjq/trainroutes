@@ -21,7 +21,7 @@ class JourneyPlannerTest {
 
     @Test
     void getRouteOfStraightGraph() {
-        JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName,orderedStationList);
+        JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
         List<String> route = jp.bfs("NE3", "NE6", trainStations);
         List<String> expectedRoute = new LinkedList<>();
         expectedRoute.add("NE3");
@@ -34,7 +34,7 @@ class JourneyPlannerTest {
 
     @Test
     void getRouteOfStationWithMultipleNeighbours() {
-        JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName,orderedStationList);
+        JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
         List<String> route = jp.bfs("NE5", "CC2", trainStations);
         List<String> expectedRoute = new LinkedList<>();
         expectedRoute.add("NE5");

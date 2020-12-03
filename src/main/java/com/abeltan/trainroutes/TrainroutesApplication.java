@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TrainroutesApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TrainroutesApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TrainroutesApplication.class, args);
+    }
 
 }

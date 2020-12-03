@@ -5,25 +5,26 @@
     <title>Your route suggestion</title>
 </head>
 <body>
-    <div align="center">
-        <h1>Suggested Train Route</h1>
+<div align="center">
+    <h1>Suggested Train Route</h1>
+    <br>
+    <table>
+        <tr th:each="plan, planStat : ${routeSuggestions}">
+            <td>
+                <h2 th:text="'Route ' + ${planStat.count} + ':'"/>
+                <div th:text="'Travel from ' + ${plan.getSource()} + ' to ' + ${plan.getDestination()}"/>
+                <div th:text="'Stations travelled: ' + ${plan.getNumberOfStations()}"/>
+                <br>
+                <div th:each="step, rowStat : ${plan.getTravelSteps()}"
+                     th:text="${rowStat.even} ? '&nbsp; &nbsp; &darr;&nbsp; &nbsp;'+${step} : ${step}"/>
+            </td>
+        </tr>
         <br>
-        <table>
-            <tr th:each="plan, planStat : ${routeSuggestions}">
-                <td>
-                    <h2 th:text="'Route ' + ${planStat.count} + ':'"/>
-                    <div th:text="'Travel from ' + ${plan.getSource()} + ' to ' + ${plan.getDestination()}" />
-                    <div th:text="'Stations travelled: ' + ${plan.getNumberOfStations()}" />
-                    <br>
-                    <div th:each="step, rowStat : ${plan.getTravelSteps()}" th:text="${rowStat.even} ? '&nbsp; &nbsp; &darr;&nbsp; &nbsp;'+${step} : ${step}"/>
-                </td>
-            </tr>
-            <br>
-            <br>
-        </table>
-        <form action="/">
-            <input type="submit" value="Back to home" />
-        </form>
-    </div>
+        <br>
+    </table>
+    <form action="/">
+        <input type="submit" value="Back to home"/>
+    </form>
+</div>
 </body>
 </html>

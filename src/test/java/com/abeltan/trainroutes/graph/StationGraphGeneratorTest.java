@@ -3,10 +3,12 @@ package com.abeltan.trainroutes.graph;
 import com.abeltan.trainroutes.station.AdjacencyMap;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StationGraphGeneratorTest {
-    StationGraphGenerator sp = new StationGraphGenerator();;
+    StationGraphGenerator sp = new StationGraphGenerator();
+    ;
 
     @Test
     void thatNumberOfTrainLines_IsEight() {

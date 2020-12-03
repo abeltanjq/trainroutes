@@ -15,7 +15,7 @@ public class PageController {
 
     private final JourneyClient journeyClient;
 
-    @GetMapping(path="/")
+    @GetMapping(path = "/")
     public String getSourceToDestinationPage(Model model) {
         model.addAttribute("stationList", journeyClient.getStationsNames());
         return "source-to-dest-selection";

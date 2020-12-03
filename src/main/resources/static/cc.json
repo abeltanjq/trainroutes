@@ -1,33 +1,145 @@
 {
-  "cc" : [
-    {"code": "CC1", "name": "Dhoby Ghaut", "openingDate": "17 April 2010"},
-    {"code": "CC2", "name": "Bras Basah", "openingDate": "17 April 2010"},
-    {"code": "CC3", "name": "Esplanade", "openingDate": "17 April 2010"},
-    {"code": "CC4", "name": "Promenade", "openingDate": "17 April 2010"},
-    {"code": "CC5", "name": "Nicoll Highway", "openingDate": "17 April 2010"},
-    {"code": "CC6", "name": "Stadium", "openingDate": "17 April 2010"},
-    {"code": "CC7", "name": "Mountbatten", "openingDate": "17 April 2010"},
-    {"code": "CC8", "name": "Dakota", "openingDate": "17 April 2010"},
-    {"code": "CC9", "name": "Paya Lebar", "openingDate": "17 April 2010"},
-    {"code": "CC10", "name": "MacPherson", "openingDate": "17 April 2010"},
-    {"code": "CC11", "name": "Tai Seng", "openingDate": "17 April 2010"},
-    {"code": "CC12", "name": "Bartley", "openingDate": "28 May 2009"},
-    {"code": "CC13", "name": "Serangoon", "openingDate": "28 May 2009"},
-    {"code": "CC14", "name": "Lorong Chuan", "openingDate": "28 May 2009"},
-    {"code": "CC15", "name": "Bishan", "openingDate": "28 May 2009"},
-    {"code": "CC16", "name": "Marymount", "openingDate": "28 May 2009"},
-    {"code": "CC17", "name": "Caldecott", "openingDate": "8 October 2011"},
-    {"code": "CC19", "name": "Botanic Gardens", "openingDate": "8 October 2011"},
-    {"code": "CC20", "name": "Farrer Road", "openingDate": "8 October 2011"},
-    {"code": "CC21", "name": "Holland Village", "openingDate": "8 October 2011"},
-    {"code": "CC22", "name": "Buona Vista", "openingDate": "8 October 2011"},
-    {"code": "CC23", "name": "one-north", "openingDate": "8 October 2011"},
-    {"code": "CC24", "name": "Kent Ridge", "openingDate": "8 October 2011"},
-    {"code": "CC25", "name": "Haw Par Villa", "openingDate": "8 October 2011"},
-    {"code": "CC26", "name": "Pasir Panjang", "openingDate": "8 October 2011"},
-    {"code": "CC27", "name": "Labrador Park", "openingDate": "8 October 2011"},
-    {"code": "CC28", "name": "Telok Blangah", "openingDate": "8 October 2011"},
-    {"code": "CC29", "name": "HarbourFront", "openingDate": "8 October 2011"}
+  "cc": [
+    {
+      "code": "CC1",
+      "name": "Dhoby Ghaut",
+      "openingDate": "17 April 2010"
+    },
+    {
+      "code": "CC2",
+      "name": "Bras Basah",
+      "openingDate": "17 April 2010"
+    },
+    {
+      "code": "CC3",
+      "name": "Esplanade",
+      "openingDate": "17 April 2010"
+    },
+    {
+      "code": "CC4",
+      "name": "Promenade",
+      "openingDate": "17 April 2010"
+    },
+    {
+      "code": "CC5",
+      "name": "Nicoll Highway",
+      "openingDate": "17 April 2010"
+    },
+    {
+      "code": "CC6",
+      "name": "Stadium",
+      "openingDate": "17 April 2010"
+    },
+    {
+      "code": "CC7",
+      "name": "Mountbatten",
+      "openingDate": "17 April 2010"
+    },
+    {
+      "code": "CC8",
+      "name": "Dakota",
+      "openingDate": "17 April 2010"
+    },
+    {
+      "code": "CC9",
+      "name": "Paya Lebar",
+      "openingDate": "17 April 2010"
+    },
+    {
+      "code": "CC10",
+      "name": "MacPherson",
+      "openingDate": "17 April 2010"
+    },
+    {
+      "code": "CC11",
+      "name": "Tai Seng",
+      "openingDate": "17 April 2010"
+    },
+    {
+      "code": "CC12",
+      "name": "Bartley",
+      "openingDate": "28 May 2009"
+    },
+    {
+      "code": "CC13",
+      "name": "Serangoon",
+      "openingDate": "28 May 2009"
+    },
+    {
+      "code": "CC14",
+      "name": "Lorong Chuan",
+      "openingDate": "28 May 2009"
+    },
+    {
+      "code": "CC15",
+      "name": "Bishan",
+      "openingDate": "28 May 2009"
+    },
+    {
+      "code": "CC16",
+      "name": "Marymount",
+      "openingDate": "28 May 2009"
+    },
+    {
+      "code": "CC17",
+      "name": "Caldecott",
+      "openingDate": "8 October 2011"
+    },
+    {
+      "code": "CC19",
+      "name": "Botanic Gardens",
+      "openingDate": "8 October 2011"
+    },
+    {
+      "code": "CC20",
+      "name": "Farrer Road",
+      "openingDate": "8 October 2011"
+    },
+    {
+      "code": "CC21",
+      "name": "Holland Village",
+      "openingDate": "8 October 2011"
+    },
+    {
+      "code": "CC22",
+      "name": "Buona Vista",
+      "openingDate": "8 October 2011"
+    },
+    {
+      "code": "CC23",
+      "name": "one-north",
+      "openingDate": "8 October 2011"
+    },
+    {
+      "code": "CC24",
+      "name": "Kent Ridge",
+      "openingDate": "8 October 2011"
+    },
+    {
+      "code": "CC25",
+      "name": "Haw Par Villa",
+      "openingDate": "8 October 2011"
+    },
+    {
+      "code": "CC26",
+      "name": "Pasir Panjang",
+      "openingDate": "8 October 2011"
+    },
+    {
+      "code": "CC27",
+      "name": "Labrador Park",
+      "openingDate": "8 October 2011"
+    },
+    {
+      "code": "CC28",
+      "name": "Telok Blangah",
+      "openingDate": "8 October 2011"
+    },
+    {
+      "code": "CC29",
+      "name": "HarbourFront",
+      "openingDate": "8 October 2011"
+    }
   ]
 }
 

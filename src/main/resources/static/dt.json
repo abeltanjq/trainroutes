@@ -1,38 +1,174 @@
 {
-  "dt" : [
-    {"code": "DT1", "name": "Bukit Panjang", "openingDate": "27 December 2015"},
-    {"code": "DT2", "name": "Cashew", "openingDate": "27 December 2015"},
-    {"code": "DT3", "name": "Hillview", "openingDate": "27 December 2015"},
-    {"code": "DT5", "name": "Beauty World", "openingDate": "27 December 2015"},
-    {"code": "DT6", "name": "King Albert Park", "openingDate": "27 December 2015"},
-    {"code": "DT7", "name": "Sixth Avenue", "openingDate": "27 December 2015"},
-    {"code": "DT8", "name": "Tan Kah Kee", "openingDate": "27 December 2015"},
-    {"code": "DT9", "name": "Botanic Gardens", "openingDate": "27 December 2015"},
-    {"code": "DT10", "name": "Stevens", "openingDate": "27 December 2015"},
-    {"code": "DT11", "name": "Newton", "openingDate": "27 December 2015"},
-    {"code": "DT12", "name": "Little India", "openingDate": "27 December 2015"},
-    {"code": "DT13", "name": "Rochor", "openingDate": "27 December 2015"},
-    {"code": "DT14", "name": "Bugis", "openingDate": "22 December 2013"},
-    {"code": "DT15", "name": "Promenade", "openingDate": "22 December 2013"},
-    {"code": "DT16", "name": "Bayfront", "openingDate": "22 December 2013"},
-    {"code": "DT17", "name": "Downtown", "openingDate": "22 December 2013"},
-    {"code": "DT18", "name": "Telok Ayer", "openingDate": "22 December 2013"},
-    {"code": "DT19", "name": "Chinatown", "openingDate": "22 December 2013"},
-    {"code": "DT20", "name": "Fort Canning", "openingDate": "21 October 2017"},
-    {"code": "DT21", "name": "Bencoolen", "openingDate": "21 October 2017"},
-    {"code": "DT22", "name": "Jalan Besar", "openingDate": "21 October 2017"},
-    {"code": "DT23", "name": "Bendemeer", "openingDate": "21 October 2017"},
-    {"code": "DT24", "name": "Geylang Bahru", "openingDate": "21 October 2017"},
-    {"code": "DT25", "name": "Mattar", "openingDate": "21 October 2017"},
-    {"code": "DT26", "name": "MacPherson", "openingDate": "21 October 2017"},
-    {"code": "DT27", "name": "Ubi", "openingDate": "21 October 2017"},
-    {"code": "DT28", "name": "Kaki Bukit", "openingDate": "21 October 2017"},
-    {"code": "DT29", "name": "Bedok North", "openingDate": "21 October 2017"},
-    {"code": "DT30", "name": "Bedok Reservoir", "openingDate": "21 October 2017"},
-    {"code": "DT31", "name": "Tampines West", "openingDate": "21 October 2017"},
-    {"code": "DT32", "name": "Tampines", "openingDate": "21 October 2017"},
-    {"code": "DT33", "name": "Tampines East", "openingDate": "21 October 2017"},
-    {"code": "DT34", "name": "Upper Changi", "openingDate": "21 October 2017"},
-    {"code": "DT35", "name": "Expo", "openingDate": "21 October 2017"}
+  "dt": [
+    {
+      "code": "DT1",
+      "name": "Bukit Panjang",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT2",
+      "name": "Cashew",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT3",
+      "name": "Hillview",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT5",
+      "name": "Beauty World",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT6",
+      "name": "King Albert Park",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT7",
+      "name": "Sixth Avenue",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT8",
+      "name": "Tan Kah Kee",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT9",
+      "name": "Botanic Gardens",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT10",
+      "name": "Stevens",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT11",
+      "name": "Newton",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT12",
+      "name": "Little India",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT13",
+      "name": "Rochor",
+      "openingDate": "27 December 2015"
+    },
+    {
+      "code": "DT14",
+      "name": "Bugis",
+      "openingDate": "22 December 2013"
+    },
+    {
+      "code": "DT15",
+      "name": "Promenade",
+      "openingDate": "22 December 2013"
+    },
+    {
+      "code": "DT16",
+      "name": "Bayfront",
+      "openingDate": "22 December 2013"
+    },
+    {
+      "code": "DT17",
+      "name": "Downtown",
+      "openingDate": "22 December 2013"
+    },
+    {
+      "code": "DT18",
+      "name": "Telok Ayer",
+      "openingDate": "22 December 2013"
+    },
+    {
+      "code": "DT19",
+      "name": "Chinatown",
+      "openingDate": "22 December 2013"
+    },
+    {
+      "code": "DT20",
+      "name": "Fort Canning",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT21",
+      "name": "Bencoolen",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT22",
+      "name": "Jalan Besar",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT23",
+      "name": "Bendemeer",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT24",
+      "name": "Geylang Bahru",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT25",
+      "name": "Mattar",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT26",
+      "name": "MacPherson",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT27",
+      "name": "Ubi",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT28",
+      "name": "Kaki Bukit",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT29",
+      "name": "Bedok North",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT30",
+      "name": "Bedok Reservoir",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT31",
+      "name": "Tampines West",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT32",
+      "name": "Tampines",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT33",
+      "name": "Tampines East",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT34",
+      "name": "Upper Changi",
+      "openingDate": "21 October 2017"
+    },
+    {
+      "code": "DT35",
+      "name": "Expo",
+      "openingDate": "21 October 2017"
+    }
   ]
 }
