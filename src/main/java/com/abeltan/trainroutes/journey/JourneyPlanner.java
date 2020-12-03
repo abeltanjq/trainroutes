@@ -16,7 +16,7 @@ public class JourneyPlanner {
     private final Map<String, String> stationCodeToName;
     private final List<String> orderedStationList;
 
-    // returns: a Map of station -> previous station.
+    // returns: the route to dest station in a list of station codes.
     // Implementation of Breath First Search
     public List<String> bfs(String src, String dest, AdjacencyMap adjMap) {
         Map<String, Boolean> visited = new HashMap<>();
