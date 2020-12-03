@@ -1,11 +1,11 @@
-package com.abeltan.trainroutes;
+package com.abeltan.trainroutes.journey;
 
 import com.abeltan.trainroutes.graph.StationGraphGenerator;
-import com.abeltan.trainroutes.journey.JourneyPlanner;
 import com.abeltan.trainroutes.station.AdjacencyMap;
 import com.abeltan.trainroutes.station.StationCodes;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +64,7 @@ class JourneyPlannerTest {
     }
 
     @Test
-    void getTravellingRoutes() {
+    void testThatJourneyPlanIsCorrect() {
         List<String> route = new LinkedList<>();
         route.add("CC21");
         route.add("CC20");
@@ -75,28 +75,26 @@ class JourneyPlannerTest {
         route.add("DT12");
         route.add("DT13");
         route.add("DT14");
-        String expected = "Travel from Holland Village to Bugis\n" +
-                          "Stations travelled: 8\n" +
-                          "Route:\n" +
-                          "CC21\n" +
-                          "  |  Take CC line from Holland Village to Farrer Road\n" +
-                          "CC20\n" +
-                          "  |  Take CC line from Farrer Road to Botanic Gardens\n" +
-                          "CC19\n" +
-                          "  |  Change from CC line to DT line\n" +
-                          "DT9\n" +
-                          "  |  Take DT line from Botanic Gardens to Stevens\n" +
-                          "DT10\n" +
-                          "  |  Take DT line from Stevens to Newton\n" +
-                          "DT11\n" +
-                          "  |  Take DT line from Newton to Little India\n" +
-                          "DT12\n" +
-                          "  |  Take DT line from Little India to Rochor\n" +
-                          "DT13\n" +
-                          "  |  Take DT line from Rochor to Bugis\n" +
-                          "DT14";
+        List<String> expectedTravelSteps = new ArrayList<>();
+        expectedTravelSteps.add("CC21");
+        expectedTravelSteps.add("Take CC line from Holland Village to Farrer Road");
+        expectedTravelSteps.add("CC20");
+        expectedTravelSteps.add("Take CC line from Farrer Road to Botanic Gardens");
+        expectedTravelSteps.add("CC19");
+        expectedTravelSteps.add("Change from CC line to DT line");
+        expectedTravelSteps.add("DT9");
+        expectedTravelSteps.add("Take DT line from Botanic Gardens to Stevens");
+        expectedTravelSteps.add("DT10");
+        expectedTravelSteps.add("Take DT line from Stevens to Newton");
+        expectedTravelSteps.add("DT11");
+        expectedTravelSteps.add("Take DT line from Newton to Little India");
+        expectedTravelSteps.add("DT12");
+        expectedTravelSteps.add("Take DT line from Little India to Rochor");
+        expectedTravelSteps.add("DT13");
+        expectedTravelSteps.add("Take DT line from Rochor to Bugis");
+        expectedTravelSteps.add("DT14");
         JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
-        assertEquals(expected, jp.travellingStepsFor(route));
+        assertEquals(expectedTravelSteps, jp.journeyPlanFor(route).getTravelSteps());
     }
 
     @Test
