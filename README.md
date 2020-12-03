@@ -8,7 +8,7 @@
 3. Chrome browser.
 
 ### Running the program
-1. Using a the terminal, change directory to the project directory.
+1. Open the terminal, navigate to the project directory.
    - `cd /trainroutes` 
 2. Start the spring boot app.
    - `./mvmw spring-boot:run`
