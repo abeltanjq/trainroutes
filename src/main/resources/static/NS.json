@@ -1,5 +1,5 @@
 {
-  "ns" : [
+  "NS" : [
     {"code": "NS1","name":"Jurong East", "openingDate": "10 March 1990"},
     {"code": "NS2","name":"Bukit Batok", "openingDate": "10 March 1990"},
     {"code": "NS3","name":"Bukit Gombak", "openingDate": "10 March 1990"},

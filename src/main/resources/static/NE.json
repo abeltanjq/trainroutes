@@ -1,5 +1,5 @@
 {
-  "ne" : [
+  "NE" : [
     {"code": "NE1","name": "HarbourFront", "openingDate": "20 June 2003"},
     {"code": "NE3","name": "Outram Park", "openingDate": "20 June 2003"},
     {"code": "NE4","name": "Chinatown", "openingDate": "20 June 2003"},

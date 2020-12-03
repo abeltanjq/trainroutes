@@ -5,6 +5,7 @@ import com.abeltan.trainroutes.station.StationCodes;
 import com.abeltan.trainroutes.station.AdjacencyMap;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -12,15 +13,81 @@ import java.util.*;
 
 public class StationGraphGenerator {
     List<String> trainLines;
-    private AdjacencyMap stationCodeAdjMap;
-    private StationCodes nameToCodes;
-    private Map<String, String> codeToName;
-    private List<String> orderedStationList;
+    @Getter private AdjacencyMap stationCodeAdjMap;
+    @Getter private StationCodes nameToCodes;
+    @Getter private Map<String, String> codeToName;
+    @Getter private List<String> orderedStationList;
+    // Key: Line Code (eg. CC, NS), Value: mins between station in that line.
+    @Getter private Map<String, Integer> peakEdgeWeight; // (6am-9am and 6pm-9pm on Mon-Fri)
+    @Getter private Map<String, Integer> nightEdgeWeight; // (10pm-6am on Mon-Sun)
+    @Getter private Map<String, Integer> normalEdgeWeight; // all other times
 
     public StationGraphGenerator() {
         parseTrainLineTypes();
         parseTrainLines();
+        processEdgeWeights();
     }
+
+    private void processEdgeWeights() {
+        processPeakHour();
+        processNightHour();
+        processNormalHour();
+    }
+
+    public Map<String, Integer> processNormalHour() {
+        normalEdgeWeight = new HashMap<>();
+        normalEdgeWeight.put("change", 10);
+        List<String> fastLines = List.of("DT", "TE");
+        for (String fLines : fastLines) {
+            normalEdgeWeight.put(fLines, 8);
+        }
+
+        for (String line : trainLines) {
+            if (!fastLines.contains(line)) {
+                nightEdgeWeight.put(line, 10);
+            }
+        }
+
+        return normalEdgeWeight;
+    }
+
+    public Map<String, Integer> processNightHour() {
+        nightEdgeWeight = new HashMap<>();
+        List<String> closedStations = List.of("DT", "CG", "CE");
+        for (String station : closedStations) {
+            nightEdgeWeight.put(station, null); // null to make the vertex "unreachable"
+        }
+
+        for (String line : trainLines) {
+            if (!closedStations.contains(line)) {
+                nightEdgeWeight.put(line, 10);
+            }
+        }
+
+        nightEdgeWeight.put("TE", 8);
+        nightEdgeWeight.put("change", 10);
+
+        return nightEdgeWeight;
+    }
+
+    public Map<String, Integer> processPeakHour() {
+        peakEdgeWeight = new HashMap<>();
+        peakEdgeWeight.put("change", 15);
+
+        List<String> slowLines = List.of("NS", "NE");
+        for (String sLine : slowLines) {
+            peakEdgeWeight.put(sLine, 12);
+        }
+
+        for (String line : trainLines) {
+            if (!slowLines.contains(line)) {
+                peakEdgeWeight.put(line, 10);
+            }
+        }
+
+        return peakEdgeWeight;
+    }
+
 
     private void parseTrainLineTypes() {
         trainLines = new ArrayList<>();
@@ -48,8 +115,7 @@ public class StationGraphGenerator {
         while(iterator.hasNext()) {
             String line = (String) iterator.next();
             try {
-                String lowerLine = line.toLowerCase();
-                JsonNode jsonNode = mapper.readTree(new ClassPathResource("static/" + lowerLine + ".json").getFile()).get(lowerLine);
+                JsonNode jsonNode = mapper.readTree(new ClassPathResource("static/" + line + ".json").getFile()).get(line);
                 JsonNode previous = null;
                 if (jsonNode.isArray()) {
                     for (JsonNode node: jsonNode) {
@@ -81,21 +147,5 @@ public class StationGraphGenerator {
 
     public int getNumberOfLines() {
         return trainLines.size();
-    }
-
-    public AdjacencyMap getTrainStations() {
-        return stationCodeAdjMap;
-    }
-
-    public StationCodes getNameToCodes() {
-        return nameToCodes;
-    }
-
-    public Map<String, String> getCodeToName() {
-        return codeToName;
-    }
-
-    public List<String> getOrderedStationList() {
-        return orderedStationList;
     }
 }

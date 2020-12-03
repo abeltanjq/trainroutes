@@ -1,5 +1,5 @@
 {
-  "cg" : [
+  "CG" : [
     {"code": "CG0", "name": "Tanah Merah", "openingDate": "4 November 1989"},
     {"code": "CG1", "name": "Expo", "openingDate": "10 January 2001"},
     {"code": "CG2", "name": "Changi Airport", "openingDate": "8 February 2002"}
