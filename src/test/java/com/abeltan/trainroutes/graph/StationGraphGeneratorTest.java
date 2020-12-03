@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StationGraphGeneratorTest {
     StationGraphGenerator sp = new StationGraphGenerator();
-    ;
 
     @Test
     void thatNumberOfTrainLines_IsEight() {
