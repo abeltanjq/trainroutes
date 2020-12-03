@@ -11,12 +11,12 @@
     <table>
         <tr th:each="plan, planStat : ${routeSuggestions}">
             <td>
-                <h2 th:text="'Route ' + ${planStat.count} + ':'"/>
-                <div th:text="'Travel from ' + ${plan.getSource()} + ' to ' + ${plan.getDestination()}"/>
-                <div th:text="'Stations travelled: ' + ${plan.getNumberOfStations()}"/>
+                <h2 th:text="'Route ' + ${planStat.count} + ':'"></h2>
+                <div th:text="'Travel from ' + ${plan.getSource()} + ' to ' + ${plan.getDestination()}"></div>
+                <div th:text="'Stations travelled: ' + ${plan.getNumberOfStations()}"></div>
                 <br>
                 <div th:each="step, rowStat : ${plan.getTravelSteps()}"
-                     th:text="${rowStat.even} ? '&nbsp; &nbsp; &darr;&nbsp; &nbsp;'+${step} : ${step}"/>
+                     th:text="${rowStat.even} ? '&nbsp; &nbsp; &darr;&nbsp; &nbsp;'+${step} : ${step}"></div>
             </td>
         </tr>
         <br>

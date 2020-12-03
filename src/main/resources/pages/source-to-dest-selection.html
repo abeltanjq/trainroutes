@@ -14,7 +14,7 @@
                 <td>Starting station</td>
                 <td>
                     <select th:name="src" name="source">
-                        <option th:each="source : ${stationList}" th:text="${source}"/>
+                        <option th:each="source : ${stationList}" th:text="${source}"></option>
                     </select>
                 </td>
             </tr>
@@ -22,7 +22,7 @@
                 <td>Destination station</td>
                 <td>
                     <select th:name="dest" name="dest">
-                        <option th:each="dest : ${stationList}" th:text="${dest}"/>
+                        <option th:each="dest : ${stationList}" th:text="${dest}"></option>
                     </select>
                 </td>
             </tr>
