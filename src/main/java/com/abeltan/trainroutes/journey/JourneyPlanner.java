@@ -64,39 +64,6 @@ public class JourneyPlanner {
         return route;
     }
 
-    public String travellingStepsFor(List<String> routesInStationCodes) {
-        StringBuilder sb = new StringBuilder();
-        String start = routesInStationCodes.get(0);
-        String end = routesInStationCodes.get(routesInStationCodes.size() - 1);
-        sb.append("Travel from " + stationCodeToName.get(start) + " to " + stationCodeToName.get(end));
-        sb.append(System.lineSeparator());
-
-        int numOfStations = (int) routesInStationCodes.stream().map(stationCodeToName::get).distinct().count();
-        sb.append("Stations travelled: " + numOfStations);
-        sb.append(System.lineSeparator());
-        sb.append("Route:");
-        sb.append(System.lineSeparator());
-        String previous = null;
-        for (String route: routesInStationCodes) {
-            if (previous == null) {
-                sb.append(route);
-            } else {
-                String beforeStationCode = new StationCode(previous).getLineCode();
-                String currentStationCode = new StationCode(route).getLineCode();
-                sb.append(System.lineSeparator());
-                if (beforeStationCode.equals(currentStationCode)) {
-                    sb.append("  |  Take " + beforeStationCode + " line from " + stationCodeToName.get(previous) + " to " + stationCodeToName.get(route));
-                } else {
-                    sb.append("  |  Change from " + beforeStationCode + " line to " + currentStationCode + " line");
-                }
-                sb.append(System.lineSeparator());
-                sb.append(route);
-            }
-            previous = route;
-        }
-        return sb.toString();
-    }
-
     public JourneyPlan journeyPlanFor(List<String> routesInStationCodes) {
         String start = stationCodeToName.get(routesInStationCodes.get(0));
         String end = stationCodeToName.get(routesInStationCodes.get(routesInStationCodes.size() - 1));

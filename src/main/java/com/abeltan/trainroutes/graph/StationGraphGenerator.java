@@ -10,6 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class StationGraphGenerator {
     List<String> trainLines;
@@ -83,4 +84,8 @@ public class StationGraphGenerator {
     public int getNumberOfLines() {
         return trainLines.size();
     }
-}
+
+    public static String removeStationCodesWithSquareBrackets(String stationCodeWithSquareBrackets) {
+        return stationCodeWithSquareBrackets.replaceAll("^(\\[\\D{2}\\d{1,2}\\]\\s){1}","");
+    }
+ }

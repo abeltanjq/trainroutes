@@ -1,5 +1,6 @@
 package com.abeltan.trainroutes.controller;
 
+import com.abeltan.trainroutes.graph.StationGraphGenerator;
 import com.abeltan.trainroutes.journey.JourneyClient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,8 +27,8 @@ public class PageController {
             @RequestParam String dest,
             Model model
     ) {
-        String source = src.replaceAll("^(\\[\\D{2}\\d{1,2}\\]\\s){1}","");
-        String destination = dest.replaceAll("^(\\[\\D{2}\\d{1,2}\\]\\s){1}","");
+        String source = StationGraphGenerator.removeStationCodesWithSquareBrackets(src);
+        String destination = StationGraphGenerator.removeStationCodesWithSquareBrackets(dest);
         model.addAttribute("routeSuggestions", journeyClient.getRouteInstructionsBetween(source, destination));
         return "route-suggestion";
     }

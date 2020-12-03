@@ -9,12 +9,12 @@ class StationGraphGeneratorTest {
     StationGraphGenerator sp = new StationGraphGenerator();;
 
     @Test
-    void numberOfTrainLinesIsEight() {
+    void thatNumberOfTrainLines_IsEight() {
         assertEquals(8, sp.getNumberOfLines());
     }
 
     @Test
-    void adjacentStationsOfParsedJsonIsCorrect() {
+    void thatAdjacentStations_OfParsedJson_IsCorrect() {
         StationGraphGenerator sp = new StationGraphGenerator();
         AdjacencyMap adjacencyMap = sp.getStationCodeAdjMap();
         // Bedok -> Tanah Merah
@@ -34,5 +34,13 @@ class StationGraphGeneratorTest {
         assertTrue(adjacencyMap.getAdjacencyOf("CC1").contains("CC2"));
         assertTrue(adjacencyMap.getAdjacencyOf("CC1").contains("NS24"));
         assertTrue(adjacencyMap.getAdjacencyOf("CC1").contains("NE6"));
+    }
+
+    @Test
+    void thatRegesRemoves_StationCodes_SurroundedBy_SquareBrackets() {
+        String ns1 = "[NS1] Jurong East";
+        String ns12 = "[NS12] Canberra";
+        assertEquals("Jurong East", StationGraphGenerator.removeStationCodesWithSquareBrackets(ns1));
+        assertEquals("Canberra", StationGraphGenerator.removeStationCodesWithSquareBrackets(ns12));
     }
 }
