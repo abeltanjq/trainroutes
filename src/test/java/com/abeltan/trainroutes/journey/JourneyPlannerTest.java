@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JourneyPlannerTest {
     StationGraphGenerator stationGraphGenerator = new StationGraphGenerator();
-    AdjacencyMap trainStations = stationGraphGenerator.getTrainStations();
+    AdjacencyMap trainStations = stationGraphGenerator.getStationCodeAdjMap();
     StationCodes nameToCodes = stationGraphGenerator.getNameToCodes();
     Map<String, String> codeToName = stationGraphGenerator.getCodeToName();
     List<String> orderedStationList = stationGraphGenerator.getOrderedStationList();

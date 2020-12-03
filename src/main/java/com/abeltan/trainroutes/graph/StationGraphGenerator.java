@@ -5,6 +5,7 @@ import com.abeltan.trainroutes.station.StationCodes;
 import com.abeltan.trainroutes.station.AdjacencyMap;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -12,10 +13,10 @@ import java.util.*;
 
 public class StationGraphGenerator {
     List<String> trainLines;
-    private AdjacencyMap stationCodeAdjMap;
-    private StationCodes nameToCodes;
-    private Map<String, String> codeToName;
-    private List<String> orderedStationList;
+    @Getter private AdjacencyMap stationCodeAdjMap;
+    @Getter private StationCodes nameToCodes;
+    @Getter private Map<String, String> codeToName;
+    @Getter private List<String> orderedStationList;
 
     public StationGraphGenerator() {
         parseTrainLineTypes();
@@ -81,21 +82,5 @@ public class StationGraphGenerator {
 
     public int getNumberOfLines() {
         return trainLines.size();
-    }
-
-    public AdjacencyMap getTrainStations() {
-        return stationCodeAdjMap;
-    }
-
-    public StationCodes getNameToCodes() {
-        return nameToCodes;
-    }
-
-    public Map<String, String> getCodeToName() {
-        return codeToName;
-    }
-
-    public List<String> getOrderedStationList() {
-        return orderedStationList;
     }
 }

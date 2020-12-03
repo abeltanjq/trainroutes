@@ -16,7 +16,7 @@ class StationGraphGeneratorTest {
     @Test
     void adjacentStationsOfParsedJsonIsCorrect() {
         StationGraphGenerator sp = new StationGraphGenerator();
-        AdjacencyMap adjacencyMap = sp.getTrainStations();
+        AdjacencyMap adjacencyMap = sp.getStationCodeAdjMap();
         // Bedok -> Tanah Merah
         assertTrue(adjacencyMap.getAdjacencyOf("EW5").contains("EW4"));
         // Bedok -> Kembangan

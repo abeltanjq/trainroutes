@@ -10,7 +10,7 @@ public class JourneyClient {
     public JourneyClient() {
         StationGraphGenerator sgg = new StationGraphGenerator();
         journeyPlanner = new JourneyPlanner(
-                sgg.getTrainStations(),
+                sgg.getStationCodeAdjMap(),
                 sgg.getNameToCodes(),
                 sgg.getCodeToName(),
                 sgg.getOrderedStationList());
