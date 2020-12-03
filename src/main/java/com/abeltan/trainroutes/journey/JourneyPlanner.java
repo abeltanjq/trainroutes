@@ -18,6 +18,13 @@ public class JourneyPlanner {
     @Getter private final Map<String, String> stationCodeToName;
     @Getter private final List<String> orderedStationList;
 
+    public static final String PEAK_HOUR = "peak hour";
+    public static final String NIGHT_HOUR = "night hour";
+    public static final String NORMAL_HOUR = "normal hour";
+    public static final String NO_TIME_CONSIDERATION = "no time consideration";
+
+    final int INFINITY = 999999999;
+
     // returns: the route to dest station in a list of station codes.
     // Implementation of Breath First Search
     public List<String> bfs(String src, String dest, AdjacencyMap adjMap) {
@@ -55,11 +62,42 @@ public class JourneyPlanner {
     }
 
     public List<String> dijkstra(String src, String dest, AdjacencyMap adjMap, Map<String, Integer> edgeWeight) {
-        Queue<DistanceToV> distanceToV = new PriorityQueue<>(new DistanceToV.DistanceToVComparator());
+        Queue<DistanceToV> pq = new PriorityQueue<>(new DistanceToV.DistanceToVComparator());
+        Map<String, Integer> distanceTo = new HashMap<>();
         Map<String, String> previous = new HashMap<>();
-        distanceToV.add(new DistanceToV(edgeWeight.get(src+src), src));
 
-        return new ArrayList<>(); // to be replaced
+        // initialize
+        distanceTo.put(src, 0);
+        pq.add(new DistanceToV(0, src));
+
+        while(!pq.isEmpty()) {
+            DistanceToV current = pq.poll();
+            if (current.getDistance() == distanceTo.get(current.getVertex())) {
+                List<String> neighbours = adjMap.getAdjacencyOf(current.getVertex());
+                for (String neighbour: neighbours) {
+                    int distanceToCurrent = distanceTo.get(current.getVertex()) == null ? INFINITY : distanceTo.get(current.getVertex());
+                    int possibleDistanceToNext = distanceToCurrent + edgeWeightBetween(src, neighbour, edgeWeight);
+                    int distanceToNeighbour = distanceTo.get(neighbour) == null ? INFINITY : distanceTo.get(neighbour);
+                    if (distanceToNeighbour > possibleDistanceToNext) {
+                        distanceTo.put(neighbour, possibleDistanceToNext);
+                        pq.add(new DistanceToV(possibleDistanceToNext, neighbour));
+                        previous.put(neighbour, current.getVertex());
+                    }
+                }
+            }
+        }
+
+        return reconstructRouteFrom(previous, dest);
+    }
+
+    public int edgeWeightBetween(String src, String dest, Map<String, Integer> edgeWeight) {
+        if (StationCode.isSameLine(src, dest)) {
+            // todo: edge weight could be null due to night time. Need to consider this.
+            Integer weight = edgeWeight.get(StationCode.getStationLineFrom(src));
+            return weight != null ? weight : INFINITY;
+        } else {
+            return edgeWeight.get("change");
+        }
     }
 
     private List<String> reconstructRouteFrom(Map<String, String> previous, String dest) {
@@ -108,14 +146,14 @@ public class JourneyPlanner {
 
     // Params: Station names. eg "Dhoby Ghaut", "Kovan"
     // Returns a list of shortest routes between multiple sources and destination.
-    public List<List<String>> findRoutesBetween(String stationA, String stationB) {
+    public List<List<String>> findRoutesBetween(String stationA, String stationB, Map<String, Integer> edgeWeight) {
         List<List<String>> possibleRoutes = new ArrayList<>();
         List<StationCode> stationACode = stationNameToCode.getStationCodesFrom(stationA);
         List<StationCode> stationBCode = stationNameToCode.getStationCodesFrom(stationB);
 
         for (int src = 0; src < stationACode.size(); src++) {
             for (int dest = 0; dest < stationBCode.size(); dest++) {
-                possibleRoutes.add(bfs(stationACode.get(src).toString(), stationBCode.get(dest).toString(), stationAdjacents));
+                possibleRoutes.add(dijkstra(stationACode.get(src).toString(), stationBCode.get(dest).toString(), stationAdjacents, edgeWeight));
             }
         }
 

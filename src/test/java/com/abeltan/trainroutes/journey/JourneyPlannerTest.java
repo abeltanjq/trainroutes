@@ -18,6 +18,10 @@ class JourneyPlannerTest {
     StationCodes nameToCodes = stationGraphGenerator.getNameToCodes();
     Map<String, String> codeToName = stationGraphGenerator.getCodeToName();
     List<String> orderedStationList = stationGraphGenerator.getOrderedStationList();
+    Map<String, Integer> peakHour = stationGraphGenerator.getPeakEdgeWeight();
+    Map<String, Integer> nightHour = stationGraphGenerator.getNightEdgeWeight();
+    Map<String, Integer> normalHour = stationGraphGenerator.getNormalEdgeWeight();
+    Map<String, Integer> uniformHour = stationGraphGenerator.getUniformEdgeWeight();
 
     @Test
     void getRouteOfStraightGraph() {
@@ -46,9 +50,27 @@ class JourneyPlannerTest {
     }
 
     @Test
-    void getRouteFromHollandVillageToBugis() {
+    void getRouteFrom_HollandVillageToBugis_WithBFS() {
         JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
         List<String> route = jp.bfs("CC21", "DT14", trainStations);
+        List<String> expectedRoute = new LinkedList<>();
+        expectedRoute.add("CC21");
+        expectedRoute.add("CC20");
+        expectedRoute.add("CC19");
+        expectedRoute.add("DT9");
+        expectedRoute.add("DT10");
+        expectedRoute.add("DT11");
+        expectedRoute.add("DT12");
+        expectedRoute.add("DT13");
+        expectedRoute.add("DT14");
+
+        assertEquals(expectedRoute, route);
+    }
+
+    @Test
+    void getRouteFrom_HollandVillageToBugis_WithDijkstra() {
+        JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
+        List<String> route = jp.dijkstra("CC21", "DT14", trainStations, uniformHour);
         List<String> expectedRoute = new LinkedList<>();
         expectedRoute.add("CC21");
         expectedRoute.add("CC20");
@@ -100,7 +122,7 @@ class JourneyPlannerTest {
     @Test
     void getRouteUsingStationNames() {
         JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
-        List<List<String>> route = jp.findRoutesBetween("Outram Park", "Dhoby Ghaut");
+        List<List<String>> route = jp.findRoutesBetween("Outram Park", "Dhoby Ghaut", uniformHour);
         List<String> expectedRoute = new LinkedList<>();
         expectedRoute.add("NE3");
         expectedRoute.add("NE4");

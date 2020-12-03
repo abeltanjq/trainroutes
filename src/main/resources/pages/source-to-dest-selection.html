@@ -11,7 +11,7 @@
     <form th:action="@{/routes}" method="GET">
         <table>
             <tr>
-                <td>Starting station</td>
+                <td>Starting Station</td>
                 <td>
                     <select th:name="src" name="source">
                         <option th:each="source : ${stationList}" th:text="${source}"></option>
@@ -19,10 +19,18 @@
                 </td>
             </tr>
             <tr>
-                <td>Destination station</td>
+                <td>Destination Station</td>
                 <td>
                     <select th:name="dest" name="dest">
                         <option th:each="dest : ${stationList}" th:text="${dest}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Time of Day</td>
+                <td>
+                    <select th:hour="src" name="hour">
+                        <option th:each="time : ${timeOfDayList}" th:text="${time}"></option>
                     </select>
                 </td>
             </tr>

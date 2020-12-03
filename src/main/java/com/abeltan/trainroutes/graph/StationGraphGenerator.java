@@ -21,6 +21,7 @@ public class StationGraphGenerator {
     @Getter private Map<String, Integer> peakEdgeWeight; // (6am-9am and 6pm-9pm on Mon-Fri)
     @Getter private Map<String, Integer> nightEdgeWeight; // (10pm-6am on Mon-Sun)
     @Getter private Map<String, Integer> normalEdgeWeight; // all other times
+    @Getter private Map<String, Integer> uniformEdgeWeight;
 
     public StationGraphGenerator() {
         parseTrainLineTypes();
@@ -32,9 +33,18 @@ public class StationGraphGenerator {
         processPeakHour();
         processNightHour();
         processNormalHour();
+        processUniformEdges();
     }
 
-    public Map<String, Integer> processNormalHour() {
+    private void processUniformEdges() {
+        uniformEdgeWeight = new HashMap<>();
+        for (String line : trainLines) {
+            uniformEdgeWeight.put(line, 1);
+        }
+        uniformEdgeWeight.put("change", 1);
+    }
+
+    private void processNormalHour() {
         normalEdgeWeight = new HashMap<>();
         normalEdgeWeight.put("change", 10);
         List<String> fastLines = List.of("DT", "TE");
@@ -44,14 +54,12 @@ public class StationGraphGenerator {
 
         for (String line : trainLines) {
             if (!fastLines.contains(line)) {
-                nightEdgeWeight.put(line, 10);
+                normalEdgeWeight.put(line, 10);
             }
         }
-
-        return normalEdgeWeight;
     }
 
-    public Map<String, Integer> processNightHour() {
+    private void processNightHour() {
         nightEdgeWeight = new HashMap<>();
         List<String> closedStations = List.of("DT", "CG", "CE");
         for (String station : closedStations) {
@@ -66,11 +74,9 @@ public class StationGraphGenerator {
 
         nightEdgeWeight.put("TE", 8);
         nightEdgeWeight.put("change", 10);
-
-        return nightEdgeWeight;
     }
 
-    public Map<String, Integer> processPeakHour() {
+    private void processPeakHour() {
         peakEdgeWeight = new HashMap<>();
         peakEdgeWeight.put("change", 15);
 
@@ -84,8 +90,6 @@ public class StationGraphGenerator {
                 peakEdgeWeight.put(line, 10);
             }
         }
-
-        return peakEdgeWeight;
     }
 
 

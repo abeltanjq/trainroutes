@@ -44,4 +44,38 @@ class StationGraphGeneratorTest {
         assertEquals("Jurong East", StationGraphGenerator.removeStationCodesWithSquareBrackets(ns1));
         assertEquals("Canberra", StationGraphGenerator.removeStationCodesWithSquareBrackets(ns12));
     }
+
+    @Test
+    void thatPeakHour_EdgeWeights_AreCorrect() {
+        assertEquals(12, sp.getPeakEdgeWeight().get("NS"));
+        assertEquals(12, sp.getPeakEdgeWeight().get("NE"));
+        assertEquals(10, sp.getPeakEdgeWeight().get("CC"));
+        assertEquals(10, sp.getPeakEdgeWeight().get("DT"));
+        assertEquals(10, sp.getPeakEdgeWeight().get("CG"));
+        assertEquals(10, sp.getPeakEdgeWeight().get("EW"));
+        assertEquals(15, sp.getPeakEdgeWeight().get("change"));
+    }
+
+    @Test
+    void thatNightHour_EdgeWeights_AreCorrect() {
+        assertEquals(10, sp.getNightEdgeWeight().get("NS"));
+        assertEquals(10, sp.getNightEdgeWeight().get("CC"));
+        assertEquals(10, sp.getNightEdgeWeight().get("EW"));
+        assertEquals(8, sp.getNightEdgeWeight().get("TE"));
+        assertEquals(null, sp.getNightEdgeWeight().get("DT"));
+        assertEquals(null, sp.getNightEdgeWeight().get("CG"));
+        assertEquals(null, sp.getNightEdgeWeight().get("CE"));
+        assertEquals(10, sp.getNightEdgeWeight().get("change"));
+    }
+
+    @Test
+    void thatNormalHour_EdgeWeights_AreCorrect() {
+        assertEquals(10, sp.getNormalEdgeWeight().get("NS"));
+        assertEquals(10, sp.getNormalEdgeWeight().get("EW"));
+        assertEquals(10, sp.getNormalEdgeWeight().get("CG"));
+        assertEquals(10, sp.getNormalEdgeWeight().get("CC"));
+        assertEquals(8, sp.getNormalEdgeWeight().get("DT"));
+        assertEquals(8, sp.getNormalEdgeWeight().get("TE"));
+        assertEquals(10, sp.getNormalEdgeWeight().get("change"));
+    }
 }
