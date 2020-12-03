@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Select you source and destination stations</title>
+</head>
+<body>
+    <div align="center">
+        <h1>Find the shortest mrt route</h1>
+        <br>
+        <form th:action="@{/routes}" method="GET">
+            <table>
+                <tr>
+                    <td>Starting station</td>
+                    <td>
+                        <select th:name="src" name="source">
+                            <option th:each="source : ${stationList}" th:text="${source}"/>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Destination station</td>
+                    <td>
+                        <select th:name="dest" name="dest">
+                            <option th:each="dest : ${stationList}" th:text="${dest}"/>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Find Route">
+        </form>
+    </div>
+</body>
+</html>

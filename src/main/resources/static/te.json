@@ -1,0 +1,26 @@
+{
+  "te" : [
+    {"code": "TE1", "name": "Woodlands North", "openingDate": "31 December 2019"},
+    {"code": "TE2", "name": "Woodlands", "openingDate": "31 December 2019"},
+    {"code": "TE3", "name": "Woodlands South", "openingDate": "31 December 2019"},
+    {"code": "TE4", "name": "Springleaf", "openingDate": "31 December 2020"},
+    {"code": "TE5", "name": "Lentor", "openingDate": "31 December 2020"},
+    {"code": "TE6", "name": "Mayflower", "openingDate": "31 December 2020"},
+    {"code": "TE7", "name": "Bright Hill", "openingDate": "31 December 2020"},
+    {"code": "TE8", "name": "Upper Thomson", "openingDate": "31 December 2020"},
+    {"code": "TE9", "name": "Caldecott", "openingDate": "31 December 2020"},
+    {"code": "TE10", "name": "Mount Pleasant", "openingDate": "31 December 2021"},
+    {"code": "TE11", "name": "Stevens", "openingDate": "31 December 2021"},
+    {"code": "TE12", "name": "Napier", "openingDate": "31 December 2021"},
+    {"code": "TE13", "name": "Orchard Boulevard", "openingDate": "31 December 2021"},
+    {"code": "TE14", "name": "Orchard", "openingDate": "31 December 2021"},
+    {"code": "TE15", "name": "Great World", "openingDate": "31 December 2021"},
+    {"code": "TE16", "name": "Havelock", "openingDate": "31 December 2021"},
+    {"code": "TE17", "name": "Outram Park", "openingDate": "31 December 2021"},
+    {"code": "TE18", "name": "Maxwell", "openingDate": "31 December 2021"},
+    {"code": "TE19", "name": "Shenton Way", "openingDate": "31 December 2021"},
+    {"code": "TE20", "name": "Marina Bay", "openingDate": "31 December 2021"},
+    {"code": "TE21", "name": "Marina South", "openingDate": "31 December 2021"},
+    {"code": "TE22", "name": "Gardens by the Bay", "openingDate": "31 December 2021"}
+  ]
+}
