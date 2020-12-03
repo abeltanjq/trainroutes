@@ -6,16 +6,17 @@ import com.abeltan.trainroutes.station.StationCode;
 import com.abeltan.trainroutes.station.StationCodes;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class JourneyPlanner {
-    private final AdjacencyMap stationAdjacents;
-    private final StationCodes stationNameToCode;
-    private final Map<String, String> stationCodeToName;
-    private final List<String> orderedStationList;
+    @Getter private final AdjacencyMap stationAdjacents;
+    @Getter private final StationCodes stationNameToCode;
+    @Getter private final Map<String, String> stationCodeToName;
+    @Getter private final List<String> orderedStationList;
 
     // returns: the route to dest station in a list of station codes.
     // Implementation of Breath First Search
@@ -25,7 +26,7 @@ public class JourneyPlanner {
         boolean destReached = false;
 
         Map<String, String> previous = new HashMap<>();
-        visited.put(src, true);
+        visited.put(src,true);
         queue.add(src);
 
         while (queue.size() != 0 || destReached) {
