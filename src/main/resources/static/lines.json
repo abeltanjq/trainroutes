@@ -1,3 +1,12 @@
 {
-  "lines" : ["NS", "EW", "CG", "NE", "CC", "CE", "DT", "TE"]
+  "lines": [
+    "NS",
+    "EW",
+    "CG",
+    "NE",
+    "CC",
+    "CE",
+    "DT",
+    "TE"
+  ]
 }

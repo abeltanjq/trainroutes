@@ -8,9 +8,19 @@ import java.util.List;
 
 @AllArgsConstructor
 public class JourneyPlan {
-    @Getter @Setter private String source;
-    @Getter @Setter private String destination;
-    @Getter @Setter private int numberOfStations;
-    @Getter @Setter private List<String> travelledStationCodes;
-    @Getter @Setter private List<String> travelSteps;
+    @Getter
+    @Setter
+    private String source;
+    @Getter
+    @Setter
+    private String destination;
+    @Getter
+    @Setter
+    private int numberOfStations;
+    @Getter
+    @Setter
+    private List<String> travelledStationCodes;
+    @Getter
+    @Setter
+    private List<String> travelSteps;
 }

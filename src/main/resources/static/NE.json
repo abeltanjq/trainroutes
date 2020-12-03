@@ -1,20 +1,84 @@
 {
-  "NE" : [
-    {"code": "NE1","name": "HarbourFront", "openingDate": "20 June 2003"},
-    {"code": "NE3","name": "Outram Park", "openingDate": "20 June 2003"},
-    {"code": "NE4","name": "Chinatown", "openingDate": "20 June 2003"},
-    {"code": "NE5","name": "Clarke Quay", "openingDate": "20 June 2003"},
-    {"code": "NE6","name": "Dhoby Ghaut", "openingDate": "20 June 2003"},
-    {"code": "NE7","name": "Little India", "openingDate": "20 June 2003"},
-    {"code": "NE8","name": "Farrer Park", "openingDate": "20 June 2003"},
-    {"code": "NE9","name": "Boon Keng", "openingDate": "20 June 2003"},
-    {"code": "NE10","name": "Potong Pasir", "openingDate": "20 June 2003"},
-    {"code": "NE11","name": "Woodleigh", "openingDate": "20 June 2011"},
-    {"code": "NE12","name": "Serangoon", "openingDate": "20 June 2003"},
-    {"code": "NE13","name": "Kovan", "openingDate": "20 June 2003"},
-    {"code": "NE14","name": "Hougang", "openingDate": "20 June 2003"},
-    {"code": "NE15","name": "Buangkok", "openingDate": "15 January 2006"},
-    {"code": "NE16","name": "Sengkang", "openingDate": "20 June 2003"},
-    {"code": "NE17","name": "Punggol", "openingDate": "20 June 2003"}
+  "NE": [
+    {
+      "code": "NE1",
+      "name": "HarbourFront",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE3",
+      "name": "Outram Park",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE4",
+      "name": "Chinatown",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE5",
+      "name": "Clarke Quay",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE6",
+      "name": "Dhoby Ghaut",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE7",
+      "name": "Little India",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE8",
+      "name": "Farrer Park",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE9",
+      "name": "Boon Keng",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE10",
+      "name": "Potong Pasir",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE11",
+      "name": "Woodleigh",
+      "openingDate": "20 June 2011"
+    },
+    {
+      "code": "NE12",
+      "name": "Serangoon",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE13",
+      "name": "Kovan",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE14",
+      "name": "Hougang",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE15",
+      "name": "Buangkok",
+      "openingDate": "15 January 2006"
+    },
+    {
+      "code": "NE16",
+      "name": "Sengkang",
+      "openingDate": "20 June 2003"
+    },
+    {
+      "code": "NE17",
+      "name": "Punggol",
+      "openingDate": "20 June 2003"
+    }
   ]
 }

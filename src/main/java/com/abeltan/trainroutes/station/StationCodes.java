@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class StationCodes {
     private Map<String, List<StationCode>> stationCodes;
+
     public StationCodes() {
         stationCodes = new HashMap<>();
     }

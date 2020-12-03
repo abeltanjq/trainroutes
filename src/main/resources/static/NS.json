@@ -1,31 +1,139 @@
 {
-  "NS" : [
-    {"code": "NS1","name":"Jurong East", "openingDate": "10 March 1990"},
-    {"code": "NS2","name":"Bukit Batok", "openingDate": "10 March 1990"},
-    {"code": "NS3","name":"Bukit Gombak", "openingDate": "10 March 1990"},
-    {"code": "NS4","name":"Choa Chu Kang", "openingDate": "10 March 1990"},
-    {"code": "NS5","name":"Yew Tee", "openingDate": "10 February 1996"},
-    {"code": "NS7","name":"Kranji", "openingDate": "10 February 1996"},
-    {"code": "NS8","name":"Marsiling", "openingDate": "10 February 1996"},
-    {"code": "NS9","name":"Woodlands", "openingDate": "10 February 1996"},
-    {"code": "NS10","name": "Admiralty", "openingDate": "10 February 1996"},
-    {"code": "NS11","name": "Sembawang", "openingDate": "10 February 1996"},
-    {"code": "NS12","name": "Canberra", "openingDate": "December 2019"},
-    {"code": "NS13","name": "Yishun", "openingDate": "20 December 1988"},
-    {"code": "NS14","name": "Khatib", "openingDate": "20 December 1988"},
-    {"code": "NS15","name": "Yio Chu Kang", "openingDate": "7 November 1987"},
-    {"code": "NS16","name": "Ang Mo Kio", "openingDate": "7 November 1987"},
-    {"code": "NS17","name": "Bishan", "openingDate": "7 November 1987"},
-    {"code": "NS18","name": "Braddell", "openingDate": "7 November 1987"},
-    {"code": "NS19","name": "Toa Payoh", "openingDate": "7 November 1987"},
-    {"code": "NS20","name": "Novena", "openingDate": "12 December 1987"},
-    {"code": "NS21","name": "Newton", "openingDate": "12 December 1987"},
-    {"code": "NS22","name": "Orchard", "openingDate": "12 December 1987"},
-    {"code": "NS23","name": "Somerset", "openingDate": "12 December 1987"},
-    {"code": "NS24","name": "Dhoby Ghaut", "openingDate": "12 December 1987"},
-    {"code": "NS25","name": "City Hall", "openingDate": "12 December 1987"},
-    {"code": "NS26","name": "Raffles Place", "openingDate": "12 December 1987"},
-    {"code": "NS27","name": "Marina Bay", "openingDate": "4 November 1989"},
-    {"code": "NS28","name": "Marina South Pier", "openingDate": "23 November 2014"}
+  "NS": [
+    {
+      "code": "NS1",
+      "name": "Jurong East",
+      "openingDate": "10 March 1990"
+    },
+    {
+      "code": "NS2",
+      "name": "Bukit Batok",
+      "openingDate": "10 March 1990"
+    },
+    {
+      "code": "NS3",
+      "name": "Bukit Gombak",
+      "openingDate": "10 March 1990"
+    },
+    {
+      "code": "NS4",
+      "name": "Choa Chu Kang",
+      "openingDate": "10 March 1990"
+    },
+    {
+      "code": "NS5",
+      "name": "Yew Tee",
+      "openingDate": "10 February 1996"
+    },
+    {
+      "code": "NS7",
+      "name": "Kranji",
+      "openingDate": "10 February 1996"
+    },
+    {
+      "code": "NS8",
+      "name": "Marsiling",
+      "openingDate": "10 February 1996"
+    },
+    {
+      "code": "NS9",
+      "name": "Woodlands",
+      "openingDate": "10 February 1996"
+    },
+    {
+      "code": "NS10",
+      "name": "Admiralty",
+      "openingDate": "10 February 1996"
+    },
+    {
+      "code": "NS11",
+      "name": "Sembawang",
+      "openingDate": "10 February 1996"
+    },
+    {
+      "code": "NS12",
+      "name": "Canberra",
+      "openingDate": "December 2019"
+    },
+    {
+      "code": "NS13",
+      "name": "Yishun",
+      "openingDate": "20 December 1988"
+    },
+    {
+      "code": "NS14",
+      "name": "Khatib",
+      "openingDate": "20 December 1988"
+    },
+    {
+      "code": "NS15",
+      "name": "Yio Chu Kang",
+      "openingDate": "7 November 1987"
+    },
+    {
+      "code": "NS16",
+      "name": "Ang Mo Kio",
+      "openingDate": "7 November 1987"
+    },
+    {
+      "code": "NS17",
+      "name": "Bishan",
+      "openingDate": "7 November 1987"
+    },
+    {
+      "code": "NS18",
+      "name": "Braddell",
+      "openingDate": "7 November 1987"
+    },
+    {
+      "code": "NS19",
+      "name": "Toa Payoh",
+      "openingDate": "7 November 1987"
+    },
+    {
+      "code": "NS20",
+      "name": "Novena",
+      "openingDate": "12 December 1987"
+    },
+    {
+      "code": "NS21",
+      "name": "Newton",
+      "openingDate": "12 December 1987"
+    },
+    {
+      "code": "NS22",
+      "name": "Orchard",
+      "openingDate": "12 December 1987"
+    },
+    {
+      "code": "NS23",
+      "name": "Somerset",
+      "openingDate": "12 December 1987"
+    },
+    {
+      "code": "NS24",
+      "name": "Dhoby Ghaut",
+      "openingDate": "12 December 1987"
+    },
+    {
+      "code": "NS25",
+      "name": "City Hall",
+      "openingDate": "12 December 1987"
+    },
+    {
+      "code": "NS26",
+      "name": "Raffles Place",
+      "openingDate": "12 December 1987"
+    },
+    {
+      "code": "NS27",
+      "name": "Marina Bay",
+      "openingDate": "4 November 1989"
+    },
+    {
+      "code": "NS28",
+      "name": "Marina South Pier",
+      "openingDate": "23 November 2014"
+    }
   ]
 }

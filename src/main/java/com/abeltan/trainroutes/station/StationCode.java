@@ -3,8 +3,9 @@ package com.abeltan.trainroutes.station;
 public class StationCode {
     private String lineCode;
     private int number;
+
     public StationCode(String stationCode) {
-        String line = stationCode.substring(0,2);
+        String line = stationCode.substring(0, 2);
         int number = Integer.parseInt(stationCode.substring(2));
         this.lineCode = line;
         this.number = number;
