@@ -59,11 +59,12 @@ public class StationGraphGenerator {
         }
     }
 
+    public static final Integer STATION_CLOSED = null;
     private void processNightHour() {
         nightEdgeWeight = new HashMap<>();
         List<String> closedStations = List.of("DT", "CG", "CE");
         for (String station : closedStations) {
-            nightEdgeWeight.put(station, null); // null to make the vertex "unreachable"
+            nightEdgeWeight.put(station, STATION_CLOSED);
         }
 
         for (String line : trainLines) {

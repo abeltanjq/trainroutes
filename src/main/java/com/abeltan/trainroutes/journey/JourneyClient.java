@@ -25,10 +25,10 @@ public class JourneyClient {
         List<JourneyPlan> journeyPlans = new ArrayList<>();
         List<List<String>> routes = journeyPlanner.findRoutesBetween(src, dest, getEdgeWeight(typeOfHour));
         if (src.equals(dest)) {
-            journeyPlans.add(journeyPlanner.journeyPlanFor(routes.get(0)));
+            journeyPlans.add(journeyPlanner.journeyPlanFor(src, dest, routes.get(0)));
         } else {
             for (List<String> route : routes) {
-                journeyPlans.add(journeyPlanner.journeyPlanFor(route));
+                journeyPlans.add(journeyPlanner.journeyPlanFor(src, dest, route));
             }
         }
         return journeyPlans;

@@ -14,6 +14,7 @@ public class DistanceToV {
     @Getter private String vertex;
 
     public static class DistanceToVComparator implements Comparator<DistanceToV> {
+        // prioritize from the shortest distance
         @Override
         public int compare(DistanceToV d1, DistanceToV d2) {
             return d1.getDistance() < d2.getDistance() ? -1 : 1;

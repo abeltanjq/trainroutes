@@ -68,6 +68,22 @@ class JourneyPlannerTest {
     }
 
     @Test
+    void thatThere_ShouldBe_NoRoute_WhenStations_AreClosed() {
+        JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
+        List<String> route = jp.dijkstra("DT5", "DT14", trainStations, nightHour);
+        List<String> expectedRoute = new LinkedList<>();
+        assertEquals(expectedRoute, route);
+    }
+
+    @Test
+    void thatThere_ShouldBe_NoRoute_WhenLaterStations_AreClosed() {
+        JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
+        List<String> route = jp.dijkstra("NS1", "DT4", trainStations, nightHour);
+        List<String> expectedRoute = new LinkedList<>();
+        assertEquals(expectedRoute, route);
+    }
+
+    @Test
     void getRouteFrom_HollandVillageToBugis_WithDijkstra() {
         JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
         List<String> route = jp.dijkstra("CC21", "DT14", trainStations, uniformHour);
@@ -88,7 +104,9 @@ class JourneyPlannerTest {
     @Test
     void testThatJourneyPlanIsCorrect() {
         List<String> route = new LinkedList<>();
-        route.add("CC21");
+        String src = "CC21";
+        String dest = "DT14";
+        route.add(src);
         route.add("CC20");
         route.add("CC19");
         route.add("DT9");
@@ -96,9 +114,9 @@ class JourneyPlannerTest {
         route.add("DT11");
         route.add("DT12");
         route.add("DT13");
-        route.add("DT14");
+        route.add(dest);
         List<String> expectedTravelSteps = new ArrayList<>();
-        expectedTravelSteps.add("CC21");
+        expectedTravelSteps.add(src);
         expectedTravelSteps.add("Take CC line from Holland Village to Farrer Road");
         expectedTravelSteps.add("CC20");
         expectedTravelSteps.add("Take CC line from Farrer Road to Botanic Gardens");
@@ -114,9 +132,20 @@ class JourneyPlannerTest {
         expectedTravelSteps.add("Take DT line from Little India to Rochor");
         expectedTravelSteps.add("DT13");
         expectedTravelSteps.add("Take DT line from Rochor to Bugis");
-        expectedTravelSteps.add("DT14");
+        expectedTravelSteps.add(dest);
         JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
-        assertEquals(expectedTravelSteps, jp.journeyPlanFor(route).getTravelSteps());
+        assertEquals(expectedTravelSteps, jp.journeyPlanFor(src, dest, route).getTravelSteps());
+    }
+
+    @Test
+    void testThatEmptyRoute_IsHandled_Correctly() {
+        List<String> route = new LinkedList<>();
+        String src = "CC21";
+        String dest = "DT14";
+        List<String> expectedTravelSteps = new ArrayList<>();
+        expectedTravelSteps.add("There is no route to " + codeToName.get(dest));
+        JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
+        assertEquals(expectedTravelSteps, jp.journeyPlanFor(src, dest, route).getTravelSteps());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.abeltan.trainroutes.journey;
 
 import com.abeltan.trainroutes.graph.DistanceToV;
+import com.abeltan.trainroutes.graph.StationGraphGenerator;
 import com.abeltan.trainroutes.station.AdjacencyMap;
 import com.abeltan.trainroutes.station.StationCode;
 import com.abeltan.trainroutes.station.StationCodes;
@@ -75,14 +76,17 @@ public class JourneyPlanner {
             if (current.getDistance() == distanceTo.get(current.getVertex())) {
                 List<String> neighbours = adjMap.getAdjacencyOf(current.getVertex());
                 for (String neighbour: neighbours) {
-                    int distanceToCurrent = distanceTo.get(current.getVertex()) == null ? INFINITY : distanceTo.get(current.getVertex());
-                    int possibleDistanceToNext = distanceToCurrent + edgeWeightBetween(src, neighbour, edgeWeight);
-                    int distanceToNeighbour = distanceTo.get(neighbour) == null ? INFINITY : distanceTo.get(neighbour);
-                    if (distanceToNeighbour > possibleDistanceToNext) {
-                        distanceTo.put(neighbour, possibleDistanceToNext);
-                        pq.add(new DistanceToV(possibleDistanceToNext, neighbour));
-                        previous.put(neighbour, current.getVertex());
-                    }
+                    // Ignore neighbour if the line is closed.
+                     if (edgeWeight.get(StationCode.getStationLineFrom(neighbour)) != StationGraphGenerator.STATION_CLOSED) {
+                         int distanceSrcToCurrent = distanceTo.get(current.getVertex()) == null ? INFINITY : distanceTo.get(current.getVertex());
+                         int possibleDistanceToNext = distanceSrcToCurrent + edgeWeightBetween(current.getVertex(), neighbour, edgeWeight);
+                         int distanceSrcToNeighbour = distanceTo.get(neighbour) == null ? INFINITY : distanceTo.get(neighbour);
+                         if (distanceSrcToNeighbour > possibleDistanceToNext) {
+                             distanceTo.put(neighbour, possibleDistanceToNext);
+                             pq.add(new DistanceToV(possibleDistanceToNext, neighbour));
+                             previous.put(neighbour, current.getVertex());
+                         }
+                     }
                 }
             }
         }
@@ -92,9 +96,7 @@ public class JourneyPlanner {
 
     public int edgeWeightBetween(String src, String dest, Map<String, Integer> edgeWeight) {
         if (StationCode.isSameLine(src, dest)) {
-            // todo: edge weight could be null due to night time. Need to consider this.
-            Integer weight = edgeWeight.get(StationCode.getStationLineFrom(src));
-            return weight != null ? weight : INFINITY;
+            return edgeWeight.get(StationCode.getStationLineFrom(dest));
         } else {
             return edgeWeight.get("change");
         }
@@ -102,23 +104,31 @@ public class JourneyPlanner {
 
     private List<String> reconstructRouteFrom(Map<String, String> previous, String dest) {
         List<String> route = new LinkedList<>();
-        route.add(dest);
-        String end = dest;
-        while (previous.containsKey(end)) {
-            String previousStation = previous.get(end);
-            route.add(0, previousStation);
-            end = previousStation;
+        if (previous.get(dest) != null) {
+            route.add(dest);
+            String end = dest;
+            while (previous.containsKey(end)) {
+                String previousStation = previous.get(end);
+                route.add(0, previousStation);
+                end = previousStation;
+            }
         }
         return route;
     }
 
-    public JourneyPlan journeyPlanFor(List<String> routesInStationCodes) {
-        String start = stationCodeToName.get(routesInStationCodes.get(0));
-        String end = stationCodeToName.get(routesInStationCodes.get(routesInStationCodes.size() - 1));
-        int numOfStations = (int) routesInStationCodes.stream().map(stationCodeToName::get).distinct().count();
+    public JourneyPlan journeyPlanFor(String src, String dest, List<String> routesInStationCodes) {
+        String start = stationCodeToName.get(src);
+        String end = stationCodeToName.get(dest);
 
         JourneyPlan journeyPlan;
         List<String> journeyInstructions = new ArrayList<>();
+        if (routesInStationCodes.isEmpty()) {
+            journeyInstructions.add("There is no route to " + end);
+            journeyPlan = new JourneyPlan(start, end, 0, routesInStationCodes, journeyInstructions);
+            return journeyPlan;
+        }
+
+        int numOfStations = routesInStationCodes.size() - 1;
 
         if (start.equals(end)) {
             journeyInstructions.add("You are already at " + end);
