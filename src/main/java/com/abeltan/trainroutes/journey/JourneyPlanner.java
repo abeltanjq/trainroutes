@@ -26,14 +26,14 @@ public class JourneyPlanner {
 
     final int INFINITY = 999999999;
 
-    public JourneyInfo dijkstra(String src, String dest, AdjacencyMap adjMap, Map<String, Integer> edgeWeight) {
+    public JourneyInfo dijkstra(StationCode src, StationCode dest, AdjacencyMap adjMap, Map<String, Integer> edgeWeight) {
         Queue<DistanceToV> pq = new PriorityQueue<>(new DistanceToV.DistanceToVComparator());
         Map<String, Integer> distanceTo = new HashMap<>();
         Map<String, String> previous = new HashMap<>();
 
         // initialize
-        distanceTo.put(src, 0);
-        pq.add(new DistanceToV(0, src));
+        distanceTo.put(src.toString(), 0);
+        pq.add(new DistanceToV(0, src.toString()));
 
         while(!pq.isEmpty()) {
             DistanceToV current = pq.poll();
@@ -43,7 +43,7 @@ public class JourneyPlanner {
                     // Ignore neighbour if the line is closed.
                      if (edgeWeight.get(StationCode.getStationLineFrom(neighbour)) != StationGraphGenerator.STATION_CLOSED) {
                          int distanceSrcToCurrent = distanceTo.get(current.getVertex()) == null ? INFINITY : distanceTo.get(current.getVertex());
-                         int possibleDistanceToNext = distanceSrcToCurrent + edgeWeightBetween(current.getVertex(), neighbour, edgeWeight);
+                         int possibleDistanceToNext = distanceSrcToCurrent + edgeWeightBetween(new StationCode(current.getVertex()), new StationCode(neighbour), edgeWeight);
                          int distanceSrcToNeighbour = distanceTo.get(neighbour) == null ? INFINITY : distanceTo.get(neighbour);
                          if (distanceSrcToNeighbour > possibleDistanceToNext) {
                              distanceTo.put(neighbour, possibleDistanceToNext);
@@ -55,28 +55,28 @@ public class JourneyPlanner {
             }
         }
 
-        List<String> route = reconstructRouteFrom(previous, dest);
-        int distanceToDestination = distanceTo.get(dest) == null ? 0 : distanceTo.get(dest);
+        List<StationCode> route = reconstructRouteFrom(previous, dest);
+        int distanceToDestination = distanceTo.get(dest.toString()) == null ? 0 : distanceTo.get(dest.toString());
         int stationsTravelled = route.isEmpty() ? 0 : route.size() - 1;
-        return new JourneyInfo(stationCodeToName.get(src), stationCodeToName.get(dest), distanceToDestination, stationsTravelled, route, new ArrayList<>());
+        return new JourneyInfo(stationCodeToName.get(src.toString()), stationCodeToName.get(dest.toString()), distanceToDestination, stationsTravelled, route, new ArrayList<>());
     }
 
-    public int edgeWeightBetween(String src, String dest, Map<String, Integer> edgeWeight) {
+    public int edgeWeightBetween(StationCode src, StationCode dest, Map<String, Integer> edgeWeight) {
         if (StationCode.isSameLine(src, dest)) {
-            return edgeWeight.get(StationCode.getStationLineFrom(dest));
+            return edgeWeight.get(dest.getLineCode());
         } else {
             return edgeWeight.get("change");
         }
     }
 
-    private List<String> reconstructRouteFrom(Map<String, String> previous, String dest) {
-        List<String> route = new LinkedList<>();
-        if (previous.get(dest) != null) {
+    private List<StationCode> reconstructRouteFrom(Map<String, String> previous, StationCode dest) {
+        List<StationCode> route = new LinkedList<>();
+        if (previous.get(dest.toString()) != null) {
             route.add(dest);
-            String end = dest;
+            String end = dest.toString();
             while (previous.containsKey(end)) {
                 String previousStation = previous.get(end);
-                route.add(0, previousStation);
+                route.add(0, new StationCode(previousStation));
                 end = previousStation;
             }
         }
@@ -95,19 +95,17 @@ public class JourneyPlanner {
             journeyInstructions.add("There is no route to " + destinationName);
             journeyInfo.setWeight(0);
         } else {
-            String previous = null;
-            for (String stationCode : journeyInfo.getTravelledStationCodes()) {
+            StationCode previous = null;
+            for (StationCode current : journeyInfo.getTravelledStationCodes()) {
                 if (previous != null) {
-                    String beforeStationCode = new StationCode(previous).getLineCode();
-                    String currentStationCode = new StationCode(stationCode).getLineCode();
-                    if (beforeStationCode.equals(currentStationCode)) {
-                        journeyInstructions.add("Take " + beforeStationCode + " line from " + stationCodeToName.get(previous) + " to " + stationCodeToName.get(stationCode));
+                    if (previous.getLineCode().equals(current.getLineCode())) {
+                        journeyInstructions.add("Take " + previous.getLineCode() + " line from " + stationCodeToName.get(previous.toString()) + " to " + stationCodeToName.get(current.toString()));
                     } else {
-                        journeyInstructions.add("Change from " + beforeStationCode + " line to " + currentStationCode + " line");
+                        journeyInstructions.add("Change from " + previous.getLineCode() + " line to " + current.getLineCode() + " line");
                     }
                 }
-                journeyInstructions.add(stationCode);
-                previous = stationCode;
+                journeyInstructions.add(current.toString());
+                previous = current;
             }
         }
         journeyInfo.setTravelSteps(journeyInstructions);
@@ -123,7 +121,7 @@ public class JourneyPlanner {
 
         for (int src = 0; src < stationACode.size(); src++) {
             for (int dest = 0; dest < stationBCode.size(); dest++) {
-                possibleRoutes.add(dijkstra(stationACode.get(src).toString(), stationBCode.get(dest).toString(), stationAdjacents, edgeWeight));
+                possibleRoutes.add(dijkstra(stationACode.get(src), stationBCode.get(dest), stationAdjacents, edgeWeight));
             }
         }
 

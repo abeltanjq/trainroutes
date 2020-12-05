@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// Stores the station code associated to a station name
+// Eg. Dhoby Ghaut -> NS24, NE6, CC1
 public class StationCodes {
     private Map<String, List<StationCode>> stationCodes;
 

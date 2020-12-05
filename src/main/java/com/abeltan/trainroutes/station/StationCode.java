@@ -35,7 +35,7 @@ public class StationCode {
         return stationCode.substring(0, 2);
     }
 
-    public static boolean isSameLine(String code1, String code2) {
-        return getStationLineFrom(code1).equals(getStationLineFrom(code2));
+    public static boolean isSameLine(StationCode code1, StationCode code2) {
+        return code1.getLineCode().equals(code2.getLineCode());
     }
 }

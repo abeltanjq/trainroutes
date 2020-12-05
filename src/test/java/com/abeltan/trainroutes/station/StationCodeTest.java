@@ -27,7 +27,7 @@ class StationCodeTest {
 
     @Test
     void thatTwo_LinesAre_TheSame_OrNot() {
-        assertTrue(StationCode.isSameLine("NS1", "NS12"));
-        assertFalse(StationCode.isSameLine("NS1", "DT1"));
+        assertTrue(StationCode.isSameLine(new StationCode("NS1"), new StationCode("NS12")));
+        assertFalse(StationCode.isSameLine(new StationCode("NS1"), new StationCode("DT1")));
     }
 }

@@ -1,5 +1,6 @@
 package com.abeltan.trainroutes.journey;
 
+import com.abeltan.trainroutes.station.StationCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,7 @@ public class JourneyInfo {
     private int numberOfStationsTravelled;
     @Getter
     @Setter
-    private List<String> travelledStationCodes;
+    private List<StationCode> travelledStationCodes;
     @Getter
     @Setter
     private List<String> travelSteps;

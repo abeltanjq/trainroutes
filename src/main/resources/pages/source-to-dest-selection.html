@@ -27,15 +27,28 @@
                 </td>
             </tr>
             <tr>
-                <td>Time of Day</td>
+                <td>Date and Time</td>
+<!--                <td>-->
+<!--                    <select th:hour="src" name="hour">-->
+<!--                        <option th:each="time : ${timeOfDayList}" th:text="${time}"></option>-->
+<!--                    </select>-->
+<!--                </td>-->
                 <td>
-                    <select th:hour="src" name="hour">
-                        <option th:each="time : ${timeOfDayList}" th:text="${time}"></option>
+                    <input type="date" th:value="${#temporals.createToday()}" th:name="date"/>
+                </td>
+                <td>
+                    <span>Hour:</span>
+                    <select th:name="hour">
+                        <option th:each="hour : ${#numbers.sequence(0,23)}" th:text="${hour}"></option>
+                    </select>
+                    <span>Min:</span>
+                    <select th:name="min">
+                        <option th:each="min : ${#numbers.sequence(0,59)}" th:text="${min}"></option>
                     </select>
                 </td>
             </tr>
         </table>
-        <input type="submit" value="Find Route">
+        <input type="submit" value="Find Route"/>
     </form>
 </div>
 </body>
