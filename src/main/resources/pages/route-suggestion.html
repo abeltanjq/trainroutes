@@ -11,9 +11,13 @@
     <table>
         <tr th:each="plan, planStat : ${routeSuggestions}">
             <td>
-                <h2 th:text="'Route ' + ${planStat.count} + ':'"></h2>
-                <div th:text="'Travel from ' + ${plan.getSource()} + ' to ' + ${plan.getDestination()}"></div>
-                <div th:text="'Stations travelled: ' + ${plan.getNumberOfStations()}"></div>
+                <h2 th:if="${plan.getNumberOfStationsTravelled() > 0}" th:text="'Route ' + ${planStat.count} + ':'"></h2>
+                <div>
+                    <span th:text="'Travel from ' + ${plan.getSource()} + ' to ' + ${plan.getDestination()}"></span>
+                    <span th:if="${timeOfDay} != 'no time consideration'" th:text="' during ' + ${timeOfDay}"></span>
+                </div>
+                <div th:if="${plan.getWeight()} <= ${plan.getNumberOfStationsTravelled()}" th:text="'Stations travelled: ' + ${plan.getNumberOfStationsTravelled()}"></div>
+                <div th:unless="${plan.getWeight()} <= ${plan.getNumberOfStationsTravelled()}" th:text="'Time: ' + ${plan.getWeight()} + ' minutes'"></div>
                 <br>
                 <div th:each="step, rowStat : ${plan.getTravelSteps()}"
                      th:text="${rowStat.even} ? '&nbsp; &nbsp; &darr;&nbsp; &nbsp;'+${step} : ${step}"></div>

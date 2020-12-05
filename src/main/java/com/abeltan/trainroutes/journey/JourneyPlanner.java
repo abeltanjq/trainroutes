@@ -85,18 +85,15 @@ public class JourneyPlanner {
     }
 
     public JourneyInfo journeyPlanFor(JourneyInfo journeyInfo) {
-        String destinationName = stationCodeToName.get(journeyInfo.getDestination());
+        String sourceName = journeyInfo.getSource();
+        String destinationName = journeyInfo.getDestination();
         List<String> journeyInstructions = new ArrayList<>();
-        if (journeyInfo.getTravelledStationCodes().isEmpty()) {
-            journeyInstructions.add("There is no route to " + destinationName);
-            journeyInfo.setTravelSteps(journeyInstructions);
-            journeyInfo.setWeight(0);
-            return journeyInfo;
-        } else if (journeyInfo.getSource().equals(journeyInfo.getDestination())) {
+        if (sourceName.equals(destinationName)) {
             journeyInstructions.add("You are already at " + destinationName);
-            journeyInfo.setTravelSteps(journeyInstructions);
             journeyInfo.setWeight(0);
-            return journeyInfo;
+        } else if (journeyInfo.getTravelledStationCodes().isEmpty()) {
+            journeyInstructions.add("There is no route to " + destinationName);
+            journeyInfo.setWeight(0);
         } else {
             String previous = null;
             for (String stationCode : journeyInfo.getTravelledStationCodes()) {

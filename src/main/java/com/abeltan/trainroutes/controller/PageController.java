@@ -43,6 +43,7 @@ public class PageController {
     ) {
         String source = StationGraphGenerator.removeStationCodesWithSquareBrackets(src);
         String destination = StationGraphGenerator.removeStationCodesWithSquareBrackets(dest);
+        model.addAttribute("timeOfDay", hour);
         model.addAttribute("routeSuggestions", journeyClient.getRouteInstructionsBetween(source, destination, hour));
         return "route-suggestion";
     }

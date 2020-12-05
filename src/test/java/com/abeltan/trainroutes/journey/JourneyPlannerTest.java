@@ -145,7 +145,7 @@ class JourneyPlannerTest {
         List<String> expectedTravelSteps = new ArrayList<>();
         expectedTravelSteps.add("There is no route to " + codeToName.get(dest));
         JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
-        assertEquals(expectedTravelSteps, jp.journeyPlanFor(new JourneyInfo(src, dest, 0, 0, route, new ArrayList<>())).getTravelSteps());
+        assertEquals(expectedTravelSteps, jp.journeyPlanFor(new JourneyInfo(codeToName.get(src), codeToName.get(dest), 0, 0, route, new ArrayList<>())).getTravelSteps());
     }
 
     @Test
@@ -159,5 +159,27 @@ class JourneyPlannerTest {
         expectedRoute.add("NE6");
 
         assertEquals(expectedRoute, route.get(0).getTravelledStationCodes());
+    }
+
+    @Test
+    void testThat_JourneyPlan_ForSrcAndDestBeingTheSame_IsCorrect() {
+        List<String> route = new LinkedList<>();
+        String src = "CC21";
+        String dest = "CC21";
+        List<String> expectedTravelSteps = new ArrayList<>();
+        expectedTravelSteps.add("You are already at CC21");
+        JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
+        assertEquals(expectedTravelSteps, jp.journeyPlanFor(new JourneyInfo(src, dest, 0, 0, route, new ArrayList<>())).getTravelSteps());
+    }
+
+    @Test
+    void testThat_JourneyPlan_ForStationsThatAre_UnreachableIsCorrect() {
+        List<String> route = new LinkedList<>();
+        String src = "CC21";
+        String dest = "DT14";
+        List<String> expectedTravelSteps = new ArrayList<>();
+        expectedTravelSteps.add("There is no route to DT14");
+        JourneyPlanner jp = new JourneyPlanner(trainStations, nameToCodes, codeToName, orderedStationList);
+        assertEquals(expectedTravelSteps, jp.journeyPlanFor(new JourneyInfo(src, dest, 0, 0, route, new ArrayList<>())).getTravelSteps());
     }
 }
