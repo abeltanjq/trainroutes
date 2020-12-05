@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.List;
 
 @AllArgsConstructor
-public class JourneyPlan {
+public class JourneyInfo {
     @Getter
     @Setter
     private String source;
@@ -16,7 +16,10 @@ public class JourneyPlan {
     private String destination;
     @Getter
     @Setter
-    private int numberOfStations;
+    private int weight;
+    @Getter
+    @Setter
+    private int numberOfStationsTravelled;
     @Getter
     @Setter
     private List<String> travelledStationCodes;

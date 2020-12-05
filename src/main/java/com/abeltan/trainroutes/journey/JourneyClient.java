@@ -21,17 +21,17 @@ public class JourneyClient {
                 sgg.getOrderedStationList());
     }
 
-    public List<JourneyPlan> getRouteInstructionsBetween(String src, String dest, String typeOfHour) {
-        List<JourneyPlan> journeyPlans = new ArrayList<>();
-        List<List<String>> routes = journeyPlanner.findRoutesBetween(src, dest, getEdgeWeight(typeOfHour));
+    public List<JourneyInfo> getRouteInstructionsBetween(String src, String dest, String typeOfHour) {
+        List<JourneyInfo> journeyInfos = new ArrayList<>();
+        List<JourneyInfo> routes = journeyPlanner.findRoutesBetween(src, dest, getEdgeWeight(typeOfHour));
         if (src.equals(dest)) {
-            journeyPlans.add(journeyPlanner.journeyPlanFor(src, dest, routes.get(0)));
+            journeyInfos.add(journeyPlanner.journeyPlanFor(routes.get(0)));
         } else {
-            for (List<String> route : routes) {
-                journeyPlans.add(journeyPlanner.journeyPlanFor(src, dest, route));
+            for (JourneyInfo route : routes) {
+                journeyInfos.add(journeyPlanner.journeyPlanFor(route));
             }
         }
-        return journeyPlans;
+        return journeyInfos;
     }
 
     public Map<String, Integer> getEdgeWeight(String hour) {

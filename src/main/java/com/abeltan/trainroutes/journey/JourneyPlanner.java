@@ -26,43 +26,7 @@ public class JourneyPlanner {
 
     final int INFINITY = 999999999;
 
-    // returns: the route to dest station in a list of station codes.
-    // Implementation of Breath First Search
-    public List<String> bfs(String src, String dest, AdjacencyMap adjMap) {
-        Map<String, Boolean> visited = new HashMap<>();
-        Queue<String> queue = new LinkedList<>();
-        boolean destReached = false;
-
-        Map<String, String> previous = new HashMap<>();
-        visited.put(src,true);
-        queue.add(src);
-
-        while (queue.size() != 0 || destReached) {
-            String currentStation = queue.poll();
-            if (currentStation.equals(dest)) {
-                destReached = true;
-                break;
-            }
-
-            Iterator<String> iterator = adjMap.getAdjacencyOf(currentStation).iterator();
-            while (iterator.hasNext()) {
-                String adjacentStation = iterator.next();
-                if (visited.get(adjacentStation) == null) {
-                    visited.put(adjacentStation, true);
-                    previous.put(adjacentStation, currentStation);
-                    queue.add(adjacentStation);
-                }
-            }
-        }
-
-        if (!destReached) {
-            return null;
-        } else {
-            return reconstructRouteFrom(previous, dest);
-        }
-    }
-
-    public List<String> dijkstra(String src, String dest, AdjacencyMap adjMap, Map<String, Integer> edgeWeight) {
+    public JourneyInfo dijkstra(String src, String dest, AdjacencyMap adjMap, Map<String, Integer> edgeWeight) {
         Queue<DistanceToV> pq = new PriorityQueue<>(new DistanceToV.DistanceToVComparator());
         Map<String, Integer> distanceTo = new HashMap<>();
         Map<String, String> previous = new HashMap<>();
@@ -91,7 +55,10 @@ public class JourneyPlanner {
             }
         }
 
-        return reconstructRouteFrom(previous, dest);
+        List<String> route = reconstructRouteFrom(previous, dest);
+        int distanceToDestination = distanceTo.get(dest) == null ? 0 : distanceTo.get(dest);
+        int stationsTravelled = route.isEmpty() ? 0 : route.size() - 1;
+        return new JourneyInfo(stationCodeToName.get(src), stationCodeToName.get(dest), distanceToDestination, stationsTravelled, route, new ArrayList<>());
     }
 
     public int edgeWeightBetween(String src, String dest, Map<String, Integer> edgeWeight) {
@@ -113,51 +80,47 @@ public class JourneyPlanner {
                 end = previousStation;
             }
         }
+
         return route;
     }
 
-    public JourneyPlan journeyPlanFor(String src, String dest, List<String> routesInStationCodes) {
-        String start = stationCodeToName.get(src);
-        String end = stationCodeToName.get(dest);
-
-        JourneyPlan journeyPlan;
+    public JourneyInfo journeyPlanFor(JourneyInfo journeyInfo) {
+        String destinationName = stationCodeToName.get(journeyInfo.getDestination());
         List<String> journeyInstructions = new ArrayList<>();
-        if (routesInStationCodes.isEmpty()) {
-            journeyInstructions.add("There is no route to " + end);
-            journeyPlan = new JourneyPlan(start, end, 0, routesInStationCodes, journeyInstructions);
-            return journeyPlan;
-        }
-
-        int numOfStations = routesInStationCodes.size() - 1;
-
-        if (start.equals(end)) {
-            journeyInstructions.add("You are already at " + end);
-            journeyPlan = new JourneyPlan(start, end, numOfStations, routesInStationCodes, journeyInstructions);
-            return journeyPlan;
-        }
-
-        String previous = null;
-        for (String route : routesInStationCodes) {
-            if (previous != null) {
-                String beforeStationCode = new StationCode(previous).getLineCode();
-                String currentStationCode = new StationCode(route).getLineCode();
-                if (beforeStationCode.equals(currentStationCode)) {
-                    journeyInstructions.add("Take " + beforeStationCode + " line from " + stationCodeToName.get(previous) + " to " + stationCodeToName.get(route));
-                } else {
-                    journeyInstructions.add("Change from " + beforeStationCode + " line to " + currentStationCode + " line");
+        if (journeyInfo.getTravelledStationCodes().isEmpty()) {
+            journeyInstructions.add("There is no route to " + destinationName);
+            journeyInfo.setTravelSteps(journeyInstructions);
+            journeyInfo.setWeight(0);
+            return journeyInfo;
+        } else if (journeyInfo.getSource().equals(journeyInfo.getDestination())) {
+            journeyInstructions.add("You are already at " + destinationName);
+            journeyInfo.setTravelSteps(journeyInstructions);
+            journeyInfo.setWeight(0);
+            return journeyInfo;
+        } else {
+            String previous = null;
+            for (String stationCode : journeyInfo.getTravelledStationCodes()) {
+                if (previous != null) {
+                    String beforeStationCode = new StationCode(previous).getLineCode();
+                    String currentStationCode = new StationCode(stationCode).getLineCode();
+                    if (beforeStationCode.equals(currentStationCode)) {
+                        journeyInstructions.add("Take " + beforeStationCode + " line from " + stationCodeToName.get(previous) + " to " + stationCodeToName.get(stationCode));
+                    } else {
+                        journeyInstructions.add("Change from " + beforeStationCode + " line to " + currentStationCode + " line");
+                    }
                 }
+                journeyInstructions.add(stationCode);
+                previous = stationCode;
             }
-            journeyInstructions.add(route);
-            previous = route;
         }
-        journeyPlan = new JourneyPlan(start, end, numOfStations, routesInStationCodes, journeyInstructions);
-        return journeyPlan;
+        journeyInfo.setTravelSteps(journeyInstructions);
+        return journeyInfo;
     }
 
     // Params: Station names. eg "Dhoby Ghaut", "Kovan"
     // Returns a list of shortest routes between multiple sources and destination.
-    public List<List<String>> findRoutesBetween(String stationA, String stationB, Map<String, Integer> edgeWeight) {
-        List<List<String>> possibleRoutes = new ArrayList<>();
+    public List<JourneyInfo> findRoutesBetween(String stationA, String stationB, Map<String, Integer> edgeWeight) {
+        List<JourneyInfo> possibleRoutes = new ArrayList<>();
         List<StationCode> stationACode = stationNameToCode.getStationCodesFrom(stationA);
         List<StationCode> stationBCode = stationNameToCode.getStationCodesFrom(stationB);
 
@@ -168,14 +131,14 @@ public class JourneyPlanner {
         }
 
         // filter for shortest routes
-        Integer fewestStation = possibleRoutes
+        Integer lowestWeight = possibleRoutes
                 .stream()
-                .mapToInt(list -> list.size())
+                .mapToInt(journey -> journey.getWeight())
                 .min().orElseThrow(NoSuchElementException::new);
 
-        List<List<String>> shortestRoutes = possibleRoutes
+        List<JourneyInfo> shortestRoutes = possibleRoutes
                 .stream()
-                .filter(list -> list.size() == fewestStation)
+                .filter(journey -> journey.getWeight() == lowestWeight)
                 .collect(Collectors.toList());
 
         return shortestRoutes;
