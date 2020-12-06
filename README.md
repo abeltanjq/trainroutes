@@ -16,3 +16,11 @@
 3. Run tests.
    - `./mvnw test`
    
+### Assumptions when considering time cost
+1. If the journey starts during peak hour, all subsequent stations are calculated with peak hour timings.  
+   This is also true for normal and night hour services.
+2. When calculating the routes, all stations are assumed to be officially opened.
+3. As night hour ends when morning peak hour begins, to prevent a case of overlapping service or missing out on a min (usually at 6am), some fine tuning of the hours is made.
+   - Night hour: 2200hrs to 0559hrs, with both start and end time inclusive.
+   - Peak hours: 0600hrs to 0859 and 1800hrs to 2059hrs, with both start and end time inclusive.
+   

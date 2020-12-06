@@ -13,19 +13,86 @@ import java.util.*;
 
 public class StationGraphGenerator {
     List<String> trainLines;
-    @Getter
-    private AdjacencyMap stationCodeAdjMap;
-    @Getter
-    private StationCodes nameToCodes;
-    @Getter
-    private Map<String, String> codeToName;
-    @Getter
-    private List<String> orderedStationList;
+    @Getter private AdjacencyMap stationCodeAdjMap;
+    @Getter private StationCodes nameToCodes;
+    @Getter private Map<String, String> codeToName;
+    @Getter private List<String> orderedStationList;
+    // Key: Line Code (eg. CC, NS), Value: mins between station in that line.
+    @Getter private Map<String, Integer> peakEdgeWeight; // (6am-9am and 6pm-9pm on Mon-Fri)
+    @Getter private Map<String, Integer> nightEdgeWeight; // (10pm-6am on Mon-Sun)
+    @Getter private Map<String, Integer> normalEdgeWeight; // all other times
+    @Getter private Map<String, Integer> uniformEdgeWeight;
 
     public StationGraphGenerator() {
         parseTrainLineTypes();
         parseTrainLines();
+        processEdgeWeights();
     }
+
+    private void processEdgeWeights() {
+        processPeakHour();
+        processNightHour();
+        processNormalHour();
+        processUniformEdges();
+    }
+
+    private void processUniformEdges() {
+        uniformEdgeWeight = new HashMap<>();
+        for (String line : trainLines) {
+            uniformEdgeWeight.put(line, 1);
+        }
+        uniformEdgeWeight.put("change", 1);
+    }
+
+    private void processNormalHour() {
+        normalEdgeWeight = new HashMap<>();
+        normalEdgeWeight.put("change", 10);
+        List<String> fastLines = List.of("DT", "TE");
+        for (String fLines : fastLines) {
+            normalEdgeWeight.put(fLines, 8);
+        }
+
+        for (String line : trainLines) {
+            if (!fastLines.contains(line)) {
+                normalEdgeWeight.put(line, 10);
+            }
+        }
+    }
+
+    public static final Integer STATION_CLOSED = null;
+    private void processNightHour() {
+        nightEdgeWeight = new HashMap<>();
+        List<String> closedStations = List.of("DT", "CG", "CE");
+        for (String station : closedStations) {
+            nightEdgeWeight.put(station, STATION_CLOSED);
+        }
+
+        for (String line : trainLines) {
+            if (!closedStations.contains(line)) {
+                nightEdgeWeight.put(line, 10);
+            }
+        }
+
+        nightEdgeWeight.put("TE", 8);
+        nightEdgeWeight.put("change", 10);
+    }
+
+    private void processPeakHour() {
+        peakEdgeWeight = new HashMap<>();
+        peakEdgeWeight.put("change", 15);
+
+        List<String> slowLines = List.of("NS", "NE");
+        for (String sLine : slowLines) {
+            peakEdgeWeight.put(sLine, 12);
+        }
+
+        for (String line : trainLines) {
+            if (!slowLines.contains(line)) {
+                peakEdgeWeight.put(line, 10);
+            }
+        }
+    }
+
 
     private void parseTrainLineTypes() {
         trainLines = new ArrayList<>();
@@ -53,8 +120,7 @@ public class StationGraphGenerator {
         while (iterator.hasNext()) {
             String line = (String) iterator.next();
             try {
-                String lowerLine = line.toLowerCase();
-                JsonNode jsonNode = mapper.readTree(new ClassPathResource("static/" + lowerLine + ".json").getFile()).get(lowerLine);
+                JsonNode jsonNode = mapper.readTree(new ClassPathResource("static/" + line + ".json").getFile()).get(line);
                 JsonNode previous = null;
                 if (jsonNode.isArray()) {
                     for (JsonNode node : jsonNode) {

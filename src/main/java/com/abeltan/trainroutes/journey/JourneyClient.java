@@ -2,32 +2,35 @@ package com.abeltan.trainroutes.journey;
 
 import com.abeltan.trainroutes.graph.StationGraphGenerator;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JourneyClient {
     private final JourneyPlanner journeyPlanner;
+    private final StationGraphGenerator sgg;
 
     public JourneyClient() {
-        StationGraphGenerator sgg = new StationGraphGenerator();
+        sgg = new StationGraphGenerator();
         journeyPlanner = new JourneyPlanner(
                 sgg.getStationCodeAdjMap(),
                 sgg.getNameToCodes(),
                 sgg.getCodeToName(),
-                sgg.getOrderedStationList());
+                sgg.getOrderedStationList(),
+                new TrainService());
     }
 
-    public List<JourneyPlan> getRouteInstructionsBetween(String src, String dest) {
-        List<JourneyPlan> journeyPlans = new ArrayList<>();
-        List<List<String>> routes = journeyPlanner.findRoutesBetween(src, dest);
+    public List<JourneyInfo> getRouteInstructionsBetween(String src, String dest, LocalDateTime boadingTime) {
+        List<JourneyInfo> journeyInfos = new ArrayList<>();
+        List<JourneyInfo> routes = journeyPlanner.findRoutesBetween(src, dest, boadingTime);
         if (src.equals(dest)) {
-            journeyPlans.add(journeyPlanner.journeyPlanFor(routes.get(0)));
+            journeyInfos.add(journeyPlanner.journeyPlanFor(routes.get(0)));
         } else {
-            for (List<String> route : routes) {
-                journeyPlans.add(journeyPlanner.journeyPlanFor(route));
+            for (JourneyInfo route : routes) {
+                journeyInfos.add(journeyPlanner.journeyPlanFor(route));
             }
         }
-        return journeyPlans;
+        return journeyInfos;
     }
 
     public List<String> getStationsNames() {

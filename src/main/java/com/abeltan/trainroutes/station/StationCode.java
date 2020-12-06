@@ -1,13 +1,31 @@
 package com.abeltan.trainroutes.station;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 public class StationCode {
-    private String lineCode;
+    @Getter
+    private Line lineCode;
     private int number;
 
+    @AllArgsConstructor
+    public enum Line {
+        NS("NS"),
+        EW("EW"),
+        CG("CG"),
+        NE("NE"),
+        CC("CC"),
+        CE("CE"),
+        DT("DT"),
+        TE("TE");
+
+        private final String line;
+    }
+
     public StationCode(String stationCode) {
-        String line = stationCode.substring(0, 2);
+        String line = getStationLineFrom(stationCode);
         int number = Integer.parseInt(stationCode.substring(2));
-        this.lineCode = line;
+        this.lineCode = Line.valueOf(line);
         this.number = number;
     }
 
@@ -25,10 +43,14 @@ public class StationCode {
 
     @Override
     public String toString() {
-        return lineCode + number;
+        return lineCode.toString() + number;
     }
 
-    public String getLineCode() {
-        return lineCode.toUpperCase();
+    public static String getStationLineFrom(String stationCode) {
+        return stationCode.substring(0, 2);
+    }
+
+    public static boolean isSameLine(StationCode code1, StationCode code2) {
+        return code1.getLineCode().equals(code2.getLineCode());
     }
 }
