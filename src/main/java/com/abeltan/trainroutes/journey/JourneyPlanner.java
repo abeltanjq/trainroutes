@@ -1,7 +1,6 @@
 package com.abeltan.trainroutes.journey;
 
 import com.abeltan.trainroutes.graph.DistanceToV;
-import com.abeltan.trainroutes.graph.StationGraphGenerator;
 import com.abeltan.trainroutes.station.AdjacencyMap;
 import com.abeltan.trainroutes.station.StationCode;
 import com.abeltan.trainroutes.station.StationCodes;
@@ -9,7 +8,11 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
@@ -18,15 +21,11 @@ public class JourneyPlanner {
     @Getter private final StationCodes stationNameToCode;
     @Getter private final Map<String, String> stationCodeToName;
     @Getter private final List<String> orderedStationList;
-
-    public static final String PEAK_HOUR = "peak hour";
-    public static final String NIGHT_HOUR = "night hour";
-    public static final String NORMAL_HOUR = "normal hour";
-    public static final String NO_TIME_CONSIDERATION = "no time consideration";
+    private final TrainService trainService;
 
     final int INFINITY = 999999999;
 
-    public JourneyInfo dijkstra(StationCode src, StationCode dest, AdjacencyMap adjMap, Map<String, Integer> edgeWeight) {
+    public JourneyInfo dijkstra(StationCode src, StationCode dest, LocalDateTime boardingTime) {
         Queue<DistanceToV> pq = new PriorityQueue<>(new DistanceToV.DistanceToVComparator());
         Map<String, Integer> distanceTo = new HashMap<>();
         Map<String, String> previous = new HashMap<>();
@@ -38,12 +37,13 @@ public class JourneyPlanner {
         while(!pq.isEmpty()) {
             DistanceToV current = pq.poll();
             if (current.getDistance() == distanceTo.get(current.getVertex())) {
-                List<String> neighbours = adjMap.getAdjacencyOf(current.getVertex());
+                List<String> neighbours = stationAdjacents.getAdjacencyOf(current.getVertex());
                 for (String neighbour: neighbours) {
                     // Ignore neighbour if the line is closed.
-                     if (edgeWeight.get(StationCode.getStationLineFrom(neighbour)) != StationGraphGenerator.STATION_CLOSED) {
+                    Integer travellingTime = trainService.getTravellingTimeOf(new StationCode(current.getVertex()), new StationCode(neighbour), boardingTime);
+                     if (travellingTime != null) {
                          int distanceSrcToCurrent = distanceTo.get(current.getVertex()) == null ? INFINITY : distanceTo.get(current.getVertex());
-                         int possibleDistanceToNext = distanceSrcToCurrent + edgeWeightBetween(new StationCode(current.getVertex()), new StationCode(neighbour), edgeWeight);
+                         int possibleDistanceToNext = distanceSrcToCurrent + travellingTime;
                          int distanceSrcToNeighbour = distanceTo.get(neighbour) == null ? INFINITY : distanceTo.get(neighbour);
                          if (distanceSrcToNeighbour > possibleDistanceToNext) {
                              distanceTo.put(neighbour, possibleDistanceToNext);
@@ -55,18 +55,27 @@ public class JourneyPlanner {
             }
         }
 
+        // Adjustments to remove start and end if they are just changes between lines
         List<StationCode> route = reconstructRouteFrom(previous, dest);
         int distanceToDestination = distanceTo.get(dest.toString()) == null ? 0 : distanceTo.get(dest.toString());
         int stationsTravelled = route.isEmpty() ? 0 : route.size() - 1;
-        return new JourneyInfo(stationCodeToName.get(src.toString()), stationCodeToName.get(dest.toString()), distanceToDestination, stationsTravelled, route, new ArrayList<>());
-    }
 
-    public int edgeWeightBetween(StationCode src, StationCode dest, Map<String, Integer> edgeWeight) {
-        if (StationCode.isSameLine(src, dest)) {
-            return edgeWeight.get(dest.getLineCode());
-        } else {
-            return edgeWeight.get("change");
+        // Remove line change at the beginning and end of journey
+        if (route.size() > 1) {
+            if (!StationCode.isSameLine(route.get(0), route.get(1))){
+                distanceToDestination -= trainService.getTravellingTimeOf(route.get(0), route.get(1), boardingTime);
+                stationsTravelled -= 1;
+                route.remove(0);
+            }
         }
+        if (route.size() > 1) {
+            if (!StationCode.isSameLine(route.get(route.size()-1), route.get(route.size()-2))){
+                distanceToDestination -= trainService.getTravellingTimeOf(route.get(route.size()-2), route.get(route.size()-1), boardingTime);
+                stationsTravelled -= 1;
+                route.remove(route.size()-1);
+            }
+        }
+        return new JourneyInfo(stationCodeToName.get(src.toString()), stationCodeToName.get(dest.toString()), distanceToDestination, stationsTravelled, route, new ArrayList<>());
     }
 
     private List<StationCode> reconstructRouteFrom(Map<String, String> previous, StationCode dest) {
@@ -114,32 +123,47 @@ public class JourneyPlanner {
 
     // Params: Station names. eg "Dhoby Ghaut", "Kovan"
     // Returns a list of shortest routes between multiple sources and destination.
-    public List<JourneyInfo> findRoutesBetween(String stationA, String stationB, Map<String, Integer> edgeWeight) {
+    public List<JourneyInfo> findRoutesBetween(String stationA, String stationB, LocalDateTime dateTime) {
         List<JourneyInfo> possibleRoutes = new ArrayList<>();
         List<StationCode> stationACode = stationNameToCode.getStationCodesFrom(stationA);
         List<StationCode> stationBCode = stationNameToCode.getStationCodesFrom(stationB);
 
         for (int src = 0; src < stationACode.size(); src++) {
             for (int dest = 0; dest < stationBCode.size(); dest++) {
-                possibleRoutes.add(dijkstra(stationACode.get(src), stationBCode.get(dest), stationAdjacents, edgeWeight));
+                possibleRoutes.add(dijkstra(stationACode.get(src), stationBCode.get(dest), dateTime));
             }
         }
 
-        // filter for shortest routes
-        Integer lowestWeight = possibleRoutes
-                .stream()
-                .mapToInt(journey -> journey.getWeight())
-                .min().orElseThrow(NoSuchElementException::new);
+        boolean hasAtLeastOneStationTravelled = false;
+        for (JourneyInfo route: possibleRoutes) {
+            if (route.getNumberOfStationsTravelled() > 0) {
+                hasAtLeastOneStationTravelled = true;
+                break;
+            }
+        }
+        List<JourneyInfo> filteredJourneys;
+        if (hasAtLeastOneStationTravelled) {
+            filteredJourneys = possibleRoutes
+                    .stream()
+                    .filter(journey -> journey.getNumberOfStationsTravelled() >= 1)
+                    .distinct()
+                    .sorted(Comparator.comparingInt(JourneyInfo::getWeight))
+                    .collect(Collectors.toList());
+        } else {
+            filteredJourneys = List.of(possibleRoutes.get(0));
+        }
 
-        List<JourneyInfo> shortestRoutes = possibleRoutes
-                .stream()
-                .filter(journey -> journey.getWeight() == lowestWeight)
-                .collect(Collectors.toList());
-
-        return shortestRoutes;
+        return filteredJourneys;
     }
 
     public List<String> getStationNames() {
         return orderedStationList;
+    }
+
+    public static <T> Predicate<T> distinctByKey(
+            Function<? super T, ?> keyExtractor) {
+
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 }

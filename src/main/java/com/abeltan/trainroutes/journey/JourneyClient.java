@@ -2,11 +2,9 @@ package com.abeltan.trainroutes.journey;
 
 import com.abeltan.trainroutes.graph.StationGraphGenerator;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import static com.abeltan.trainroutes.journey.JourneyPlanner.*;
 
 public class JourneyClient {
     private final JourneyPlanner journeyPlanner;
@@ -18,12 +16,13 @@ public class JourneyClient {
                 sgg.getStationCodeAdjMap(),
                 sgg.getNameToCodes(),
                 sgg.getCodeToName(),
-                sgg.getOrderedStationList());
+                sgg.getOrderedStationList(),
+                new TrainService());
     }
 
-    public List<JourneyInfo> getRouteInstructionsBetween(String src, String dest, String typeOfHour) {
+    public List<JourneyInfo> getRouteInstructionsBetween(String src, String dest, LocalDateTime boadingTime) {
         List<JourneyInfo> journeyInfos = new ArrayList<>();
-        List<JourneyInfo> routes = journeyPlanner.findRoutesBetween(src, dest, getEdgeWeight(typeOfHour));
+        List<JourneyInfo> routes = journeyPlanner.findRoutesBetween(src, dest, boadingTime);
         if (src.equals(dest)) {
             journeyInfos.add(journeyPlanner.journeyPlanFor(routes.get(0)));
         } else {
@@ -32,19 +31,6 @@ public class JourneyClient {
             }
         }
         return journeyInfos;
-    }
-
-    public Map<String, Integer> getEdgeWeight(String hour) {
-        switch(hour) {
-            case PEAK_HOUR:
-                return sgg.getPeakEdgeWeight();
-            case NIGHT_HOUR:
-                return sgg.getNightEdgeWeight();
-            case NORMAL_HOUR:
-                return sgg.getNormalEdgeWeight();
-            default:
-                return sgg.getUniformEdgeWeight();
-        }
     }
 
     public List<String> getStationsNames() {

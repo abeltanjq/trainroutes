@@ -1,16 +1,31 @@
 package com.abeltan.trainroutes.station;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class StationCode {
     @Getter
-    private String lineCode;
+    private Line lineCode;
     private int number;
+
+    @AllArgsConstructor
+    public enum Line {
+        NS("NS"),
+        EW("EW"),
+        CG("CG"),
+        NE("NE"),
+        CC("CC"),
+        CE("CE"),
+        DT("DT"),
+        TE("TE");
+
+        private final String line;
+    }
 
     public StationCode(String stationCode) {
         String line = getStationLineFrom(stationCode);
         int number = Integer.parseInt(stationCode.substring(2));
-        this.lineCode = line;
+        this.lineCode = Line.valueOf(line);
         this.number = number;
     }
 
@@ -28,7 +43,7 @@ public class StationCode {
 
     @Override
     public String toString() {
-        return lineCode + number;
+        return lineCode.toString() + number;
     }
 
     public static String getStationLineFrom(String stationCode) {
